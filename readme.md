@@ -4,7 +4,8 @@
 
 Feather icons as StencilJS components. 
 
-## Usage
+
+## Installation
 
 There are three strategies we recommend for using web components built with Stencil.
 
@@ -22,3 +23,15 @@ There are three strategies we recommend for using web components built with Sten
 - Run `npm install st-feather --save`
 - Add an import to the npm packages `import st-feather;`
 - Then you can use the element anywhere in your template, JSX, html etc
+
+## Usage
+
+Icons can be used as web components, by prefixing the name of the icon with `icon-`. See [feathericons.com/](https://feathericons.com/) for a complete list of icons.
+```
+<icon-activity />
+```
+
+Any attributes will be forwarded to the feather svg icon.
+```
+<icon-activity stroke-width="1" color="red" />
+```
