@@ -1,5 +1,5 @@
 {
-  "name": "stencil-feather",
+  "name": "st-feather",
   "version": "0.0.1",
   "description": "Feather icons as StencilJS components",
   "main": "dist/index.cjs.js",
@@ -9,7 +9,7 @@
   "types": "dist/custom-elements/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/stencil-feather/stencil-feather.js",
+  "unpkg": "dist/st-feather/st-feather.js",
   "files": [
     "dist/",
     "loader/"
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scarhand/stencil-feather.git"
+    "url": "git+https://github.com/scarhand/st-feather.git"
   },
   "keywords": [
     "stenciljs",
@@ -34,9 +34,9 @@
   ],
   "author": "Niels van der Zanden",
   "bugs": {
-    "url": "https://github.com/scarhand/stencil-feather/issues"
+    "url": "https://github.com/scarhand/st-feather/issues"
   },
-  "homepage": "https://github.com/scarhand/stencil-feather#readme",
+  "homepage": "https://github.com/scarhand/st-feather#readme",
   "dependencies": {
     "@stencil/core": "^2.0.1"
   },

@@ -1,7 +1,7 @@
 import { Config } from '@stencil/core';
 
 export const config: Config = {
-  namespace: 'stencil-feather',
+  namespace: 'st-feather',
   outputTargets: [
     {
       type: 'dist',
