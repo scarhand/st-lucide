@@ -9,13 +9,6 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements-bundle',
-    },
-    {
-      type: 'docs-readme',
-    },
-    {
-      type: 'www',
-      serviceWorker: null, // disable service workers
-    },
+    }
   ],
 };
