@@ -38,10 +38,8 @@
   },
   "homepage": "https://github.com/scarhand/st-feather#readme",
   "dependencies": {
-    "@stencil/core": "^2.0.1"
-  },
-  "license": "MIT",
-  "devDependencies": {
+    "@stencil/core": "^2.0.1",
     "feather-icons": "^4.28.0"
-  }
+  },
+  "license": "MIT"
 }
