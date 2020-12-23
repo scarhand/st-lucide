@@ -11,12 +11,12 @@ There are three strategies we recommend for using web components built with Sten
 
 ### Script tag
 
-- Put a script tag similar to this `<script src='https://unpkg.com/st-feather@latest/dist/mycomponent.js'></script>` in the head of your index.html
+- Put a script tag similar to this `<script src='https://unpkg.com/st-feather@latest/dist/st-feather/st-feather.esm.js'></script>` in the head of your index.html
 - Then you can use the element anywhere in your template, JSX, html etc
 
 ### Node Modules
 - Run `npm install st-feather --save`
-- Put a script tag similar to this `<script src='node_modules/st-feather/dist/mycomponent.js'></script>` in the head of your index.html
+- Put a script tag similar to this `<script src='node_modules/st-feather/dist/st-feather/st-feather.esm.js'></script>` in the head of your index.html
 - Then you can use the element anywhere in your template, JSX, html etc
 
 ### In a stencil-starter app
