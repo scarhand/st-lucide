@@ -90,6 +90,16 @@ export class Plus {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    return <Host innerHTML={feather.icons['plus'].toSvg(attributesToObject(this.el))}></Host>;
+    return <Host innerHTML={feather.icons['plus'].toSvg({...attributesToObject(this.el), ...this.getProps()})}></Host>;
+  }
+
+  private getProps() {
+    const props = ['color','cursor','cx','cy','d','direction','display','fill','filter','font','height','isolation','marker','mask','opacity','overflow','r','rx','ry','stroke','transform','visibility','width','x','y'];
+    return props.reduce((acc, prop) => {
+      if(this[prop] !== undefined && this[prop] !== null) {
+        acc[prop] = this[prop];
+      }
+      return acc;
+    }, {});
   }
 }
