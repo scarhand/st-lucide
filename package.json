@@ -41,5 +41,12 @@
     "@stencil/core": "^2.0.1",
     "feather-icons": "^4.28.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "26.0.15",
+    "@types/puppeteer": "5.4.0",
+    "jest": "26.6.3",
+    "jest-cli": "26.6.3",
+    "puppeteer": "5.4.1"
+  }
 }
