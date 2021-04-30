@@ -7,6 +7,7 @@ describe('icon-toggle-left', () => {
 
     const element = await page.find('icon-toggle-left');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {

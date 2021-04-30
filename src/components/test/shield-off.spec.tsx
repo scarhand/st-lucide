@@ -7,6 +7,7 @@ describe('icon-shield-off', () => {
 
     const element = await page.find('icon-shield-off');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {

@@ -7,6 +7,7 @@ describe('icon-bluetooth', () => {
 
     const element = await page.find('icon-bluetooth');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {

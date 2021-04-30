@@ -90,7 +90,7 @@ export class Monitor {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    return <Host innerHTML={feather.icons['monitor'].toSvg({...attributesToObject(this.el), ...this.getProps()})}></Host>;
+    return <Host innerHTML={feather.icons['monitor'].toSvg({...attributesToObject(this.el), ...this.getProps()})} class="st-feather-icon"></Host>;
   }
 
   private getProps() {

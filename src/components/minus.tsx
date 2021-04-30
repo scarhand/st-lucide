@@ -90,7 +90,7 @@ export class Minus {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    return <Host innerHTML={feather.icons['minus'].toSvg({...attributesToObject(this.el), ...this.getProps()})}></Host>;
+    return <Host innerHTML={feather.icons['minus'].toSvg({...attributesToObject(this.el), ...this.getProps()})} class="st-feather-icon"></Host>;
   }
 
   private getProps() {

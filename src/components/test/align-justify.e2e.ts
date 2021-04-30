@@ -7,6 +7,7 @@ describe('icon-align-justify', () => {
 
     const element = await page.find('icon-align-justify');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {

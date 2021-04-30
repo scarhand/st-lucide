@@ -7,6 +7,7 @@ describe('icon-minimize-2', () => {
 
     const element = await page.find('icon-minimize-2');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {

@@ -90,7 +90,7 @@ export class Disc {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    return <Host innerHTML={feather.icons['disc'].toSvg({...attributesToObject(this.el), ...this.getProps()})}></Host>;
+    return <Host innerHTML={feather.icons['disc'].toSvg({...attributesToObject(this.el), ...this.getProps()})} class="st-feather-icon"></Host>;
   }
 
   private getProps() {

@@ -7,6 +7,7 @@ describe('icon-tablet', () => {
 
     const element = await page.find('icon-tablet');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {

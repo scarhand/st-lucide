@@ -7,6 +7,7 @@ describe('icon-skip-back', () => {
 
     const element = await page.find('icon-skip-back');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {

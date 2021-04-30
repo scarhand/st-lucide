@@ -7,6 +7,7 @@ describe('icon-fast-forward', () => {
 
     const element = await page.find('icon-fast-forward');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {

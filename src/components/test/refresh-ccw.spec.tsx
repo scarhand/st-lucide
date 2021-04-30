@@ -7,6 +7,7 @@ describe('icon-refresh-ccw', () => {
 
     const element = await page.find('icon-refresh-ccw');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {

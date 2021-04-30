@@ -7,6 +7,7 @@ describe('icon-log-out', () => {
 
     const element = await page.find('icon-log-out');
     expect(element).toHaveClass('hydrated');
+    expect(element).toHaveClass('st-feather-icon');
   });
 
   it('renders one-word props', async () => {
