@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconBluetooth } from '../bluetooth';
+import { createElement, Bluetooth }  from 'lucide';
 
 describe('icon-bluetooth', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-bluetooth></icon-bluetooth>');
+    const page = await newSpecPage({
+      components: [IconBluetooth],
+      html: `<icon-bluetooth></icon-bluetooth>`,
+    });
 
-    const element = await page.find('icon-bluetooth');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Bluetooth);
+
+    expect(page.root).toEqualHtml(`
+      <icon-bluetooth class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-bluetooth>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-bluetooth stroke="blue"></icon-bluetooth>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBluetooth],
+      html: `<icon-bluetooth stroke="blue"></icon-bluetooth>`,
+    });
 
-    const element = await page.find('icon-bluetooth');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Bluetooth);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-bluetooth > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-bluetooth class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-bluetooth>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-bluetooth stroke-width="2"></icon-bluetooth>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBluetooth],
+      html: `<icon-bluetooth stroke-width="2"></icon-bluetooth>`,
+    });
 
-    const element = await page.find('icon-bluetooth');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Bluetooth);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-bluetooth > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-bluetooth class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-bluetooth>
+    `);
   });
 });

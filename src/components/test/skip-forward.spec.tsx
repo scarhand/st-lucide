@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconSkipForward } from '../skip-forward';
+import { createElement, SkipForward }  from 'lucide';
 
 describe('icon-skip-forward', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-skip-forward></icon-skip-forward>');
+    const page = await newSpecPage({
+      components: [IconSkipForward],
+      html: `<icon-skip-forward></icon-skip-forward>`,
+    });
 
-    const element = await page.find('icon-skip-forward');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(SkipForward);
+
+    expect(page.root).toEqualHtml(`
+      <icon-skip-forward class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-skip-forward>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-skip-forward stroke="blue"></icon-skip-forward>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSkipForward],
+      html: `<icon-skip-forward stroke="blue"></icon-skip-forward>`,
+    });
 
-    const element = await page.find('icon-skip-forward');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(SkipForward);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-skip-forward > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-skip-forward class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-skip-forward>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-skip-forward stroke-width="2"></icon-skip-forward>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSkipForward],
+      html: `<icon-skip-forward stroke-width="2"></icon-skip-forward>`,
+    });
 
-    const element = await page.find('icon-skip-forward');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(SkipForward);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-skip-forward > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-skip-forward class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-skip-forward>
+    `);
   });
 });

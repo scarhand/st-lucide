@@ -7,7 +7,7 @@ describe('icon-cloud-drizzle', () => {
 
     const element = await page.find('icon-cloud-drizzle');
     expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    expect(element).toHaveClass('st-lucide-icon');
   });
 
   it('renders one-word props', async () => {

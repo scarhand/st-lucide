@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCameraOff } from '../camera-off';
+import { createElement, CameraOff }  from 'lucide';
 
 describe('icon-camera-off', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-camera-off></icon-camera-off>');
+    const page = await newSpecPage({
+      components: [IconCameraOff],
+      html: `<icon-camera-off></icon-camera-off>`,
+    });
 
-    const element = await page.find('icon-camera-off');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(CameraOff);
+
+    expect(page.root).toEqualHtml(`
+      <icon-camera-off class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-camera-off>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-camera-off stroke="blue"></icon-camera-off>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCameraOff],
+      html: `<icon-camera-off stroke="blue"></icon-camera-off>`,
+    });
 
-    const element = await page.find('icon-camera-off');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(CameraOff);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-camera-off > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-camera-off class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-camera-off>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-camera-off stroke-width="2"></icon-camera-off>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCameraOff],
+      html: `<icon-camera-off stroke-width="2"></icon-camera-off>`,
+    });
 
-    const element = await page.find('icon-camera-off');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(CameraOff);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-camera-off > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-camera-off class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-camera-off>
+    `);
   });
 });

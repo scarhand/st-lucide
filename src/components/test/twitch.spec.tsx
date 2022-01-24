@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconTwitch } from '../twitch';
+import { createElement, Twitch }  from 'lucide';
 
 describe('icon-twitch', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-twitch></icon-twitch>');
+    const page = await newSpecPage({
+      components: [IconTwitch],
+      html: `<icon-twitch></icon-twitch>`,
+    });
 
-    const element = await page.find('icon-twitch');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Twitch);
+
+    expect(page.root).toEqualHtml(`
+      <icon-twitch class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-twitch>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-twitch stroke="blue"></icon-twitch>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTwitch],
+      html: `<icon-twitch stroke="blue"></icon-twitch>`,
+    });
 
-    const element = await page.find('icon-twitch');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Twitch);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-twitch > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-twitch class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-twitch>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-twitch stroke-width="2"></icon-twitch>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTwitch],
+      html: `<icon-twitch stroke-width="2"></icon-twitch>`,
+    });
 
-    const element = await page.find('icon-twitch');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Twitch);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-twitch > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-twitch class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-twitch>
+    `);
   });
 });

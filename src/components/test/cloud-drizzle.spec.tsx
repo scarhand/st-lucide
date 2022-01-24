@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCloudDrizzle } from '../cloud-drizzle';
+import { createElement, CloudDrizzle }  from 'lucide';
 
 describe('icon-cloud-drizzle', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud-drizzle></icon-cloud-drizzle>');
+    const page = await newSpecPage({
+      components: [IconCloudDrizzle],
+      html: `<icon-cloud-drizzle></icon-cloud-drizzle>`,
+    });
 
-    const element = await page.find('icon-cloud-drizzle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(CloudDrizzle);
+
+    expect(page.root).toEqualHtml(`
+      <icon-cloud-drizzle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-cloud-drizzle>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud-drizzle stroke="blue"></icon-cloud-drizzle>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCloudDrizzle],
+      html: `<icon-cloud-drizzle stroke="blue"></icon-cloud-drizzle>`,
+    });
 
-    const element = await page.find('icon-cloud-drizzle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(CloudDrizzle);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-cloud-drizzle > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-cloud-drizzle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-cloud-drizzle>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud-drizzle stroke-width="2"></icon-cloud-drizzle>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCloudDrizzle],
+      html: `<icon-cloud-drizzle stroke-width="2"></icon-cloud-drizzle>`,
+    });
 
-    const element = await page.find('icon-cloud-drizzle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(CloudDrizzle);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-cloud-drizzle > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-cloud-drizzle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-cloud-drizzle>
+    `);
   });
 });

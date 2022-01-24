@@ -7,7 +7,7 @@ describe('icon-arrow-down-left', () => {
 
     const element = await page.find('icon-arrow-down-left');
     expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    expect(element).toHaveClass('st-lucide-icon');
   });
 
   it('renders one-word props', async () => {

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconWifi } from '../wifi';
+import { createElement, Wifi }  from 'lucide';
 
 describe('icon-wifi', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-wifi></icon-wifi>');
+    const page = await newSpecPage({
+      components: [IconWifi],
+      html: `<icon-wifi></icon-wifi>`,
+    });
 
-    const element = await page.find('icon-wifi');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Wifi);
+
+    expect(page.root).toEqualHtml(`
+      <icon-wifi class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-wifi>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-wifi stroke="blue"></icon-wifi>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconWifi],
+      html: `<icon-wifi stroke="blue"></icon-wifi>`,
+    });
 
-    const element = await page.find('icon-wifi');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Wifi);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-wifi > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-wifi class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-wifi>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-wifi stroke-width="2"></icon-wifi>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconWifi],
+      html: `<icon-wifi stroke-width="2"></icon-wifi>`,
+    });
 
-    const element = await page.find('icon-wifi');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Wifi);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-wifi > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-wifi class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-wifi>
+    `);
   });
 });

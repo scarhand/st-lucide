@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconAperture } from '../aperture';
+import { createElement, Aperture }  from 'lucide';
 
 describe('icon-aperture', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-aperture></icon-aperture>');
+    const page = await newSpecPage({
+      components: [IconAperture],
+      html: `<icon-aperture></icon-aperture>`,
+    });
 
-    const element = await page.find('icon-aperture');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Aperture);
+
+    expect(page.root).toEqualHtml(`
+      <icon-aperture class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-aperture>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-aperture stroke="blue"></icon-aperture>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAperture],
+      html: `<icon-aperture stroke="blue"></icon-aperture>`,
+    });
 
-    const element = await page.find('icon-aperture');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Aperture);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-aperture > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-aperture class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-aperture>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-aperture stroke-width="2"></icon-aperture>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAperture],
+      html: `<icon-aperture stroke-width="2"></icon-aperture>`,
+    });
 
-    const element = await page.find('icon-aperture');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Aperture);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-aperture > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-aperture class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-aperture>
+    `);
   });
 });

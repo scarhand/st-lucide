@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMic } from '../mic';
+import { createElement, Mic }  from 'lucide';
 
 describe('icon-mic', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-mic></icon-mic>');
+    const page = await newSpecPage({
+      components: [IconMic],
+      html: `<icon-mic></icon-mic>`,
+    });
 
-    const element = await page.find('icon-mic');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Mic);
+
+    expect(page.root).toEqualHtml(`
+      <icon-mic class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-mic>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-mic stroke="blue"></icon-mic>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMic],
+      html: `<icon-mic stroke="blue"></icon-mic>`,
+    });
 
-    const element = await page.find('icon-mic');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Mic);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-mic > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-mic class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-mic>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-mic stroke-width="2"></icon-mic>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMic],
+      html: `<icon-mic stroke-width="2"></icon-mic>`,
+    });
 
-    const element = await page.find('icon-mic');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Mic);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-mic > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-mic class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-mic>
+    `);
   });
 });

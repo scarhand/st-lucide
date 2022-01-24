@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconBarChart2 } from '../bar-chart-2';
+import { createElement, BarChart2 }  from 'lucide';
 
 describe('icon-bar-chart-2', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-bar-chart-2></icon-bar-chart-2>');
+    const page = await newSpecPage({
+      components: [IconBarChart2],
+      html: `<icon-bar-chart-2></icon-bar-chart-2>`,
+    });
 
-    const element = await page.find('icon-bar-chart-2');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(BarChart2);
+
+    expect(page.root).toEqualHtml(`
+      <icon-bar-chart-2 class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-bar-chart-2>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-bar-chart-2 stroke="blue"></icon-bar-chart-2>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBarChart2],
+      html: `<icon-bar-chart-2 stroke="blue"></icon-bar-chart-2>`,
+    });
 
-    const element = await page.find('icon-bar-chart-2');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(BarChart2);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-bar-chart-2 > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-bar-chart-2 class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-bar-chart-2>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-bar-chart-2 stroke-width="2"></icon-bar-chart-2>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBarChart2],
+      html: `<icon-bar-chart-2 stroke-width="2"></icon-bar-chart-2>`,
+    });
 
-    const element = await page.find('icon-bar-chart-2');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(BarChart2);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-bar-chart-2 > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-bar-chart-2 class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-bar-chart-2>
+    `);
   });
 });

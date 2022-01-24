@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconExternalLink } from '../external-link';
+import { createElement, ExternalLink }  from 'lucide';
 
 describe('icon-external-link', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-external-link></icon-external-link>');
+    const page = await newSpecPage({
+      components: [IconExternalLink],
+      html: `<icon-external-link></icon-external-link>`,
+    });
 
-    const element = await page.find('icon-external-link');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ExternalLink);
+
+    expect(page.root).toEqualHtml(`
+      <icon-external-link class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-external-link>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-external-link stroke="blue"></icon-external-link>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconExternalLink],
+      html: `<icon-external-link stroke="blue"></icon-external-link>`,
+    });
 
-    const element = await page.find('icon-external-link');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ExternalLink);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-external-link > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-external-link class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-external-link>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-external-link stroke-width="2"></icon-external-link>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconExternalLink],
+      html: `<icon-external-link stroke-width="2"></icon-external-link>`,
+    });
 
-    const element = await page.find('icon-external-link');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ExternalLink);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-external-link > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-external-link class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-external-link>
+    `);
   });
 });

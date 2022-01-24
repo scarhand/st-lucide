@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconScissors } from '../scissors';
+import { createElement, Scissors }  from 'lucide';
 
 describe('icon-scissors', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-scissors></icon-scissors>');
+    const page = await newSpecPage({
+      components: [IconScissors],
+      html: `<icon-scissors></icon-scissors>`,
+    });
 
-    const element = await page.find('icon-scissors');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Scissors);
+
+    expect(page.root).toEqualHtml(`
+      <icon-scissors class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-scissors>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-scissors stroke="blue"></icon-scissors>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconScissors],
+      html: `<icon-scissors stroke="blue"></icon-scissors>`,
+    });
 
-    const element = await page.find('icon-scissors');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Scissors);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-scissors > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-scissors class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-scissors>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-scissors stroke-width="2"></icon-scissors>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconScissors],
+      html: `<icon-scissors stroke-width="2"></icon-scissors>`,
+    });
 
-    const element = await page.find('icon-scissors');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Scissors);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-scissors > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-scissors class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-scissors>
+    `);
   });
 });

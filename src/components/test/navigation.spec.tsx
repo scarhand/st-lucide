@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconNavigation } from '../navigation';
+import { createElement, Navigation }  from 'lucide';
 
 describe('icon-navigation', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-navigation></icon-navigation>');
+    const page = await newSpecPage({
+      components: [IconNavigation],
+      html: `<icon-navigation></icon-navigation>`,
+    });
 
-    const element = await page.find('icon-navigation');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Navigation);
+
+    expect(page.root).toEqualHtml(`
+      <icon-navigation class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-navigation>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-navigation stroke="blue"></icon-navigation>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconNavigation],
+      html: `<icon-navigation stroke="blue"></icon-navigation>`,
+    });
 
-    const element = await page.find('icon-navigation');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Navigation);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-navigation > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-navigation class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-navigation>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-navigation stroke-width="2"></icon-navigation>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconNavigation],
+      html: `<icon-navigation stroke-width="2"></icon-navigation>`,
+    });
 
-    const element = await page.find('icon-navigation');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Navigation);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-navigation > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-navigation class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-navigation>
+    `);
   });
 });

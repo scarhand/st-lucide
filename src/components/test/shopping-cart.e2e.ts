@@ -7,7 +7,7 @@ describe('icon-shopping-cart', () => {
 
     const element = await page.find('icon-shopping-cart');
     expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    expect(element).toHaveClass('st-lucide-icon');
   });
 
   it('renders one-word props', async () => {

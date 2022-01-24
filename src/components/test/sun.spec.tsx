@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconSun } from '../sun';
+import { createElement, Sun }  from 'lucide';
 
 describe('icon-sun', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-sun></icon-sun>');
+    const page = await newSpecPage({
+      components: [IconSun],
+      html: `<icon-sun></icon-sun>`,
+    });
 
-    const element = await page.find('icon-sun');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Sun);
+
+    expect(page.root).toEqualHtml(`
+      <icon-sun class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-sun>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-sun stroke="blue"></icon-sun>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSun],
+      html: `<icon-sun stroke="blue"></icon-sun>`,
+    });
 
-    const element = await page.find('icon-sun');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Sun);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-sun > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-sun class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-sun>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-sun stroke-width="2"></icon-sun>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSun],
+      html: `<icon-sun stroke-width="2"></icon-sun>`,
+    });
 
-    const element = await page.find('icon-sun');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Sun);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-sun > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-sun class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-sun>
+    `);
   });
 });

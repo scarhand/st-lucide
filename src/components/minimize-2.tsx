@@ -1,11 +1,11 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import feather from 'feather-icons';
+import { Minimize2, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
   tag: 'icon-minimize-2'
 })
-export class Minimize2 {
+export class IconMinimize2 {
   @Element() el: any;
 
   @Prop({ attribute: 'alignment-baseline' }) alignmentBaseline: any;
@@ -90,7 +90,9 @@ export class Minimize2 {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    return <Host innerHTML={feather.icons['minimize-2'].toSvg({...attributesToObject(this.el), ...this.getProps()})} class="st-feather-icon"></Host>;
+    const inner = createElement(Minimize2);
+    Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
+    return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }
 
   private getProps() {

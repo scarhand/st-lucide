@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconTrendingUp } from '../trending-up';
+import { createElement, TrendingUp }  from 'lucide';
 
 describe('icon-trending-up', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-trending-up></icon-trending-up>');
+    const page = await newSpecPage({
+      components: [IconTrendingUp],
+      html: `<icon-trending-up></icon-trending-up>`,
+    });
 
-    const element = await page.find('icon-trending-up');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(TrendingUp);
+
+    expect(page.root).toEqualHtml(`
+      <icon-trending-up class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-trending-up>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-trending-up stroke="blue"></icon-trending-up>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTrendingUp],
+      html: `<icon-trending-up stroke="blue"></icon-trending-up>`,
+    });
 
-    const element = await page.find('icon-trending-up');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(TrendingUp);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-trending-up > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-trending-up class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-trending-up>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-trending-up stroke-width="2"></icon-trending-up>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTrendingUp],
+      html: `<icon-trending-up stroke-width="2"></icon-trending-up>`,
+    });
 
-    const element = await page.find('icon-trending-up');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(TrendingUp);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-trending-up > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-trending-up class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-trending-up>
+    `);
   });
 });

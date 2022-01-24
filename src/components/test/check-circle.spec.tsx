@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCheckCircle } from '../check-circle';
+import { createElement, CheckCircle }  from 'lucide';
 
 describe('icon-check-circle', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-check-circle></icon-check-circle>');
+    const page = await newSpecPage({
+      components: [IconCheckCircle],
+      html: `<icon-check-circle></icon-check-circle>`,
+    });
 
-    const element = await page.find('icon-check-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(CheckCircle);
+
+    expect(page.root).toEqualHtml(`
+      <icon-check-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-check-circle>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-check-circle stroke="blue"></icon-check-circle>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCheckCircle],
+      html: `<icon-check-circle stroke="blue"></icon-check-circle>`,
+    });
 
-    const element = await page.find('icon-check-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(CheckCircle);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-check-circle > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-check-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-check-circle>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-check-circle stroke-width="2"></icon-check-circle>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCheckCircle],
+      html: `<icon-check-circle stroke-width="2"></icon-check-circle>`,
+    });
 
-    const element = await page.find('icon-check-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(CheckCircle);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-check-circle > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-check-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-check-circle>
+    `);
   });
 });

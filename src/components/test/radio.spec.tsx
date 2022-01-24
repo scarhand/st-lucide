@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconRadio } from '../radio';
+import { createElement, Radio }  from 'lucide';
 
 describe('icon-radio', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-radio></icon-radio>');
+    const page = await newSpecPage({
+      components: [IconRadio],
+      html: `<icon-radio></icon-radio>`,
+    });
 
-    const element = await page.find('icon-radio');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Radio);
+
+    expect(page.root).toEqualHtml(`
+      <icon-radio class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-radio>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-radio stroke="blue"></icon-radio>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRadio],
+      html: `<icon-radio stroke="blue"></icon-radio>`,
+    });
 
-    const element = await page.find('icon-radio');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Radio);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-radio > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-radio class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-radio>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-radio stroke-width="2"></icon-radio>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRadio],
+      html: `<icon-radio stroke-width="2"></icon-radio>`,
+    });
 
-    const element = await page.find('icon-radio');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Radio);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-radio > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-radio class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-radio>
+    `);
   });
 });

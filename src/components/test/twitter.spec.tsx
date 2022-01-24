@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconTwitter } from '../twitter';
+import { createElement, Twitter }  from 'lucide';
 
 describe('icon-twitter', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-twitter></icon-twitter>');
+    const page = await newSpecPage({
+      components: [IconTwitter],
+      html: `<icon-twitter></icon-twitter>`,
+    });
 
-    const element = await page.find('icon-twitter');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Twitter);
+
+    expect(page.root).toEqualHtml(`
+      <icon-twitter class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-twitter>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-twitter stroke="blue"></icon-twitter>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTwitter],
+      html: `<icon-twitter stroke="blue"></icon-twitter>`,
+    });
 
-    const element = await page.find('icon-twitter');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Twitter);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-twitter > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-twitter class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-twitter>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-twitter stroke-width="2"></icon-twitter>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTwitter],
+      html: `<icon-twitter stroke-width="2"></icon-twitter>`,
+    });
 
-    const element = await page.find('icon-twitter');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Twitter);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-twitter > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-twitter class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-twitter>
+    `);
   });
 });

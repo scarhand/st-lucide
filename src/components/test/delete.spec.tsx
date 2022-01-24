@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconDelete } from '../delete';
+import { createElement, Delete }  from 'lucide';
 
 describe('icon-delete', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-delete></icon-delete>');
+    const page = await newSpecPage({
+      components: [IconDelete],
+      html: `<icon-delete></icon-delete>`,
+    });
 
-    const element = await page.find('icon-delete');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Delete);
+
+    expect(page.root).toEqualHtml(`
+      <icon-delete class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-delete>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-delete stroke="blue"></icon-delete>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconDelete],
+      html: `<icon-delete stroke="blue"></icon-delete>`,
+    });
 
-    const element = await page.find('icon-delete');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Delete);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-delete > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-delete class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-delete>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-delete stroke-width="2"></icon-delete>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconDelete],
+      html: `<icon-delete stroke-width="2"></icon-delete>`,
+    });
 
-    const element = await page.find('icon-delete');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Delete);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-delete > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-delete class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-delete>
+    `);
   });
 });

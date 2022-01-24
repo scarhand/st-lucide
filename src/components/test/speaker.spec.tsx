@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconSpeaker } from '../speaker';
+import { createElement, Speaker }  from 'lucide';
 
 describe('icon-speaker', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-speaker></icon-speaker>');
+    const page = await newSpecPage({
+      components: [IconSpeaker],
+      html: `<icon-speaker></icon-speaker>`,
+    });
 
-    const element = await page.find('icon-speaker');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Speaker);
+
+    expect(page.root).toEqualHtml(`
+      <icon-speaker class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-speaker>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-speaker stroke="blue"></icon-speaker>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSpeaker],
+      html: `<icon-speaker stroke="blue"></icon-speaker>`,
+    });
 
-    const element = await page.find('icon-speaker');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Speaker);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-speaker > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-speaker class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-speaker>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-speaker stroke-width="2"></icon-speaker>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSpeaker],
+      html: `<icon-speaker stroke-width="2"></icon-speaker>`,
+    });
 
-    const element = await page.find('icon-speaker');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Speaker);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-speaker > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-speaker class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-speaker>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconZoomIn } from '../zoom-in';
+import { createElement, ZoomIn }  from 'lucide';
 
 describe('icon-zoom-in', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-zoom-in></icon-zoom-in>');
+    const page = await newSpecPage({
+      components: [IconZoomIn],
+      html: `<icon-zoom-in></icon-zoom-in>`,
+    });
 
-    const element = await page.find('icon-zoom-in');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ZoomIn);
+
+    expect(page.root).toEqualHtml(`
+      <icon-zoom-in class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-zoom-in>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-zoom-in stroke="blue"></icon-zoom-in>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconZoomIn],
+      html: `<icon-zoom-in stroke="blue"></icon-zoom-in>`,
+    });
 
-    const element = await page.find('icon-zoom-in');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ZoomIn);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-zoom-in > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-zoom-in class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-zoom-in>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-zoom-in stroke-width="2"></icon-zoom-in>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconZoomIn],
+      html: `<icon-zoom-in stroke-width="2"></icon-zoom-in>`,
+    });
 
-    const element = await page.find('icon-zoom-in');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ZoomIn);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-zoom-in > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-zoom-in class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-zoom-in>
+    `);
   });
 });

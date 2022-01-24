@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconToggleLeft } from '../toggle-left';
+import { createElement, ToggleLeft }  from 'lucide';
 
 describe('icon-toggle-left', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-toggle-left></icon-toggle-left>');
+    const page = await newSpecPage({
+      components: [IconToggleLeft],
+      html: `<icon-toggle-left></icon-toggle-left>`,
+    });
 
-    const element = await page.find('icon-toggle-left');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ToggleLeft);
+
+    expect(page.root).toEqualHtml(`
+      <icon-toggle-left class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-toggle-left>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-toggle-left stroke="blue"></icon-toggle-left>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconToggleLeft],
+      html: `<icon-toggle-left stroke="blue"></icon-toggle-left>`,
+    });
 
-    const element = await page.find('icon-toggle-left');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ToggleLeft);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-toggle-left > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-toggle-left class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-toggle-left>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-toggle-left stroke-width="2"></icon-toggle-left>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconToggleLeft],
+      html: `<icon-toggle-left stroke-width="2"></icon-toggle-left>`,
+    });
 
-    const element = await page.find('icon-toggle-left');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ToggleLeft);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-toggle-left > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-toggle-left class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-toggle-left>
+    `);
   });
 });

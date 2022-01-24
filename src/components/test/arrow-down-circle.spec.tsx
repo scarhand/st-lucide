@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconArrowDownCircle } from '../arrow-down-circle';
+import { createElement, ArrowDownCircle }  from 'lucide';
 
 describe('icon-arrow-down-circle', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-arrow-down-circle></icon-arrow-down-circle>');
+    const page = await newSpecPage({
+      components: [IconArrowDownCircle],
+      html: `<icon-arrow-down-circle></icon-arrow-down-circle>`,
+    });
 
-    const element = await page.find('icon-arrow-down-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ArrowDownCircle);
+
+    expect(page.root).toEqualHtml(`
+      <icon-arrow-down-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-arrow-down-circle>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-arrow-down-circle stroke="blue"></icon-arrow-down-circle>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconArrowDownCircle],
+      html: `<icon-arrow-down-circle stroke="blue"></icon-arrow-down-circle>`,
+    });
 
-    const element = await page.find('icon-arrow-down-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ArrowDownCircle);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-arrow-down-circle > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-arrow-down-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-arrow-down-circle>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-arrow-down-circle stroke-width="2"></icon-arrow-down-circle>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconArrowDownCircle],
+      html: `<icon-arrow-down-circle stroke-width="2"></icon-arrow-down-circle>`,
+    });
 
-    const element = await page.find('icon-arrow-down-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ArrowDownCircle);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-arrow-down-circle > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-arrow-down-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-arrow-down-circle>
+    `);
   });
 });

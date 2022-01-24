@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconVideo } from '../video';
+import { createElement, Video }  from 'lucide';
 
 describe('icon-video', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-video></icon-video>');
+    const page = await newSpecPage({
+      components: [IconVideo],
+      html: `<icon-video></icon-video>`,
+    });
 
-    const element = await page.find('icon-video');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Video);
+
+    expect(page.root).toEqualHtml(`
+      <icon-video class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-video>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-video stroke="blue"></icon-video>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconVideo],
+      html: `<icon-video stroke="blue"></icon-video>`,
+    });
 
-    const element = await page.find('icon-video');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Video);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-video > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-video class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-video>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-video stroke-width="2"></icon-video>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconVideo],
+      html: `<icon-video stroke-width="2"></icon-video>`,
+    });
 
-    const element = await page.find('icon-video');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Video);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-video > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-video class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-video>
+    `);
   });
 });

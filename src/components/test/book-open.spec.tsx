@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconBookOpen } from '../book-open';
+import { createElement, BookOpen }  from 'lucide';
 
 describe('icon-book-open', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-book-open></icon-book-open>');
+    const page = await newSpecPage({
+      components: [IconBookOpen],
+      html: `<icon-book-open></icon-book-open>`,
+    });
 
-    const element = await page.find('icon-book-open');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(BookOpen);
+
+    expect(page.root).toEqualHtml(`
+      <icon-book-open class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-book-open>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-book-open stroke="blue"></icon-book-open>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBookOpen],
+      html: `<icon-book-open stroke="blue"></icon-book-open>`,
+    });
 
-    const element = await page.find('icon-book-open');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(BookOpen);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-book-open > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-book-open class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-book-open>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-book-open stroke-width="2"></icon-book-open>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBookOpen],
+      html: `<icon-book-open stroke-width="2"></icon-book-open>`,
+    });
 
-    const element = await page.find('icon-book-open');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(BookOpen);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-book-open > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-book-open class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-book-open>
+    `);
   });
 });

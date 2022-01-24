@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconVolumeX } from '../volume-x';
+import { createElement, VolumeX }  from 'lucide';
 
 describe('icon-volume-x', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-volume-x></icon-volume-x>');
+    const page = await newSpecPage({
+      components: [IconVolumeX],
+      html: `<icon-volume-x></icon-volume-x>`,
+    });
 
-    const element = await page.find('icon-volume-x');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(VolumeX);
+
+    expect(page.root).toEqualHtml(`
+      <icon-volume-x class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-volume-x>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-volume-x stroke="blue"></icon-volume-x>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconVolumeX],
+      html: `<icon-volume-x stroke="blue"></icon-volume-x>`,
+    });
 
-    const element = await page.find('icon-volume-x');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(VolumeX);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-volume-x > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-volume-x class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-volume-x>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-volume-x stroke-width="2"></icon-volume-x>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconVolumeX],
+      html: `<icon-volume-x stroke-width="2"></icon-volume-x>`,
+    });
 
-    const element = await page.find('icon-volume-x');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(VolumeX);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-volume-x > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-volume-x class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-volume-x>
+    `);
   });
 });

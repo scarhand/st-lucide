@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMinimize } from '../minimize';
+import { createElement, Minimize }  from 'lucide';
 
 describe('icon-minimize', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-minimize></icon-minimize>');
+    const page = await newSpecPage({
+      components: [IconMinimize],
+      html: `<icon-minimize></icon-minimize>`,
+    });
 
-    const element = await page.find('icon-minimize');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Minimize);
+
+    expect(page.root).toEqualHtml(`
+      <icon-minimize class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-minimize>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-minimize stroke="blue"></icon-minimize>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMinimize],
+      html: `<icon-minimize stroke="blue"></icon-minimize>`,
+    });
 
-    const element = await page.find('icon-minimize');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Minimize);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-minimize > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-minimize class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-minimize>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-minimize stroke-width="2"></icon-minimize>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMinimize],
+      html: `<icon-minimize stroke-width="2"></icon-minimize>`,
+    });
 
-    const element = await page.find('icon-minimize');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Minimize);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-minimize > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-minimize class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-minimize>
+    `);
   });
 });

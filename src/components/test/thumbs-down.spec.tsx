@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconThumbsDown } from '../thumbs-down';
+import { createElement, ThumbsDown }  from 'lucide';
 
 describe('icon-thumbs-down', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-thumbs-down></icon-thumbs-down>');
+    const page = await newSpecPage({
+      components: [IconThumbsDown],
+      html: `<icon-thumbs-down></icon-thumbs-down>`,
+    });
 
-    const element = await page.find('icon-thumbs-down');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ThumbsDown);
+
+    expect(page.root).toEqualHtml(`
+      <icon-thumbs-down class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-thumbs-down>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-thumbs-down stroke="blue"></icon-thumbs-down>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconThumbsDown],
+      html: `<icon-thumbs-down stroke="blue"></icon-thumbs-down>`,
+    });
 
-    const element = await page.find('icon-thumbs-down');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ThumbsDown);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-thumbs-down > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-thumbs-down class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-thumbs-down>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-thumbs-down stroke-width="2"></icon-thumbs-down>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconThumbsDown],
+      html: `<icon-thumbs-down stroke-width="2"></icon-thumbs-down>`,
+    });
 
-    const element = await page.find('icon-thumbs-down');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ThumbsDown);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-thumbs-down > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-thumbs-down class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-thumbs-down>
+    `);
   });
 });

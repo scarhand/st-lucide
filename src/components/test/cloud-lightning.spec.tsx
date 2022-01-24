@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCloudLightning } from '../cloud-lightning';
+import { createElement, CloudLightning }  from 'lucide';
 
 describe('icon-cloud-lightning', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud-lightning></icon-cloud-lightning>');
+    const page = await newSpecPage({
+      components: [IconCloudLightning],
+      html: `<icon-cloud-lightning></icon-cloud-lightning>`,
+    });
 
-    const element = await page.find('icon-cloud-lightning');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(CloudLightning);
+
+    expect(page.root).toEqualHtml(`
+      <icon-cloud-lightning class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-cloud-lightning>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud-lightning stroke="blue"></icon-cloud-lightning>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCloudLightning],
+      html: `<icon-cloud-lightning stroke="blue"></icon-cloud-lightning>`,
+    });
 
-    const element = await page.find('icon-cloud-lightning');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(CloudLightning);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-cloud-lightning > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-cloud-lightning class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-cloud-lightning>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud-lightning stroke-width="2"></icon-cloud-lightning>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCloudLightning],
+      html: `<icon-cloud-lightning stroke-width="2"></icon-cloud-lightning>`,
+    });
 
-    const element = await page.find('icon-cloud-lightning');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(CloudLightning);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-cloud-lightning > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-cloud-lightning class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-cloud-lightning>
+    `);
   });
 });

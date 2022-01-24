@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconAnchor } from '../anchor';
+import { createElement, Anchor }  from 'lucide';
 
 describe('icon-anchor', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-anchor></icon-anchor>');
+    const page = await newSpecPage({
+      components: [IconAnchor],
+      html: `<icon-anchor></icon-anchor>`,
+    });
 
-    const element = await page.find('icon-anchor');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Anchor);
+
+    expect(page.root).toEqualHtml(`
+      <icon-anchor class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-anchor>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-anchor stroke="blue"></icon-anchor>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAnchor],
+      html: `<icon-anchor stroke="blue"></icon-anchor>`,
+    });
 
-    const element = await page.find('icon-anchor');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Anchor);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-anchor > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-anchor class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-anchor>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-anchor stroke-width="2"></icon-anchor>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAnchor],
+      html: `<icon-anchor stroke-width="2"></icon-anchor>`,
+    });
 
-    const element = await page.find('icon-anchor');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Anchor);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-anchor > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-anchor class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-anchor>
+    `);
   });
 });

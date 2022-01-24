@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconGitCommit } from '../git-commit';
+import { createElement, GitCommit }  from 'lucide';
 
 describe('icon-git-commit', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-git-commit></icon-git-commit>');
+    const page = await newSpecPage({
+      components: [IconGitCommit],
+      html: `<icon-git-commit></icon-git-commit>`,
+    });
 
-    const element = await page.find('icon-git-commit');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(GitCommit);
+
+    expect(page.root).toEqualHtml(`
+      <icon-git-commit class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-git-commit>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-git-commit stroke="blue"></icon-git-commit>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGitCommit],
+      html: `<icon-git-commit stroke="blue"></icon-git-commit>`,
+    });
 
-    const element = await page.find('icon-git-commit');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(GitCommit);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-git-commit > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-git-commit class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-git-commit>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-git-commit stroke-width="2"></icon-git-commit>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGitCommit],
+      html: `<icon-git-commit stroke-width="2"></icon-git-commit>`,
+    });
 
-    const element = await page.find('icon-git-commit');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(GitCommit);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-git-commit > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-git-commit class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-git-commit>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCrop } from '../crop';
+import { createElement, Crop }  from 'lucide';
 
 describe('icon-crop', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-crop></icon-crop>');
+    const page = await newSpecPage({
+      components: [IconCrop],
+      html: `<icon-crop></icon-crop>`,
+    });
 
-    const element = await page.find('icon-crop');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Crop);
+
+    expect(page.root).toEqualHtml(`
+      <icon-crop class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-crop>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-crop stroke="blue"></icon-crop>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCrop],
+      html: `<icon-crop stroke="blue"></icon-crop>`,
+    });
 
-    const element = await page.find('icon-crop');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Crop);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-crop > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-crop class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-crop>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-crop stroke-width="2"></icon-crop>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCrop],
+      html: `<icon-crop stroke-width="2"></icon-crop>`,
+    });
 
-    const element = await page.find('icon-crop');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Crop);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-crop > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-crop class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-crop>
+    `);
   });
 });

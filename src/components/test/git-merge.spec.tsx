@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconGitMerge } from '../git-merge';
+import { createElement, GitMerge }  from 'lucide';
 
 describe('icon-git-merge', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-git-merge></icon-git-merge>');
+    const page = await newSpecPage({
+      components: [IconGitMerge],
+      html: `<icon-git-merge></icon-git-merge>`,
+    });
 
-    const element = await page.find('icon-git-merge');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(GitMerge);
+
+    expect(page.root).toEqualHtml(`
+      <icon-git-merge class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-git-merge>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-git-merge stroke="blue"></icon-git-merge>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGitMerge],
+      html: `<icon-git-merge stroke="blue"></icon-git-merge>`,
+    });
 
-    const element = await page.find('icon-git-merge');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(GitMerge);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-git-merge > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-git-merge class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-git-merge>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-git-merge stroke-width="2"></icon-git-merge>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGitMerge],
+      html: `<icon-git-merge stroke-width="2"></icon-git-merge>`,
+    });
 
-    const element = await page.find('icon-git-merge');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(GitMerge);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-git-merge > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-git-merge class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-git-merge>
+    `);
   });
 });

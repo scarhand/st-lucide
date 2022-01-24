@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCopy } from '../copy';
+import { createElement, Copy }  from 'lucide';
 
 describe('icon-copy', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-copy></icon-copy>');
+    const page = await newSpecPage({
+      components: [IconCopy],
+      html: `<icon-copy></icon-copy>`,
+    });
 
-    const element = await page.find('icon-copy');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Copy);
+
+    expect(page.root).toEqualHtml(`
+      <icon-copy class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-copy>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-copy stroke="blue"></icon-copy>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCopy],
+      html: `<icon-copy stroke="blue"></icon-copy>`,
+    });
 
-    const element = await page.find('icon-copy');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Copy);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-copy > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-copy class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-copy>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-copy stroke-width="2"></icon-copy>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCopy],
+      html: `<icon-copy stroke-width="2"></icon-copy>`,
+    });
 
-    const element = await page.find('icon-copy');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Copy);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-copy > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-copy class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-copy>
+    `);
   });
 });

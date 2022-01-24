@@ -1,11 +1,11 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import feather from 'feather-icons';
+import { TrendingUp, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
   tag: 'icon-trending-up'
 })
-export class TrendingUp {
+export class IconTrendingUp {
   @Element() el: any;
 
   @Prop({ attribute: 'alignment-baseline' }) alignmentBaseline: any;
@@ -90,7 +90,9 @@ export class TrendingUp {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    return <Host innerHTML={feather.icons['trending-up'].toSvg({...attributesToObject(this.el), ...this.getProps()})} class="st-feather-icon"></Host>;
+    const inner = createElement(TrendingUp);
+    Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
+    return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }
 
   private getProps() {

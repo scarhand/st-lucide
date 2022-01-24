@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconLock } from '../lock';
+import { createElement, Lock }  from 'lucide';
 
 describe('icon-lock', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-lock></icon-lock>');
+    const page = await newSpecPage({
+      components: [IconLock],
+      html: `<icon-lock></icon-lock>`,
+    });
 
-    const element = await page.find('icon-lock');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Lock);
+
+    expect(page.root).toEqualHtml(`
+      <icon-lock class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-lock>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-lock stroke="blue"></icon-lock>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconLock],
+      html: `<icon-lock stroke="blue"></icon-lock>`,
+    });
 
-    const element = await page.find('icon-lock');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Lock);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-lock > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-lock class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-lock>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-lock stroke-width="2"></icon-lock>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconLock],
+      html: `<icon-lock stroke-width="2"></icon-lock>`,
+    });
 
-    const element = await page.find('icon-lock');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Lock);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-lock > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-lock class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-lock>
+    `);
   });
 });

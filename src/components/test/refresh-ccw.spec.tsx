@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconRefreshCcw } from '../refresh-ccw';
+import { createElement, RefreshCcw }  from 'lucide';
 
 describe('icon-refresh-ccw', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-refresh-ccw></icon-refresh-ccw>');
+    const page = await newSpecPage({
+      components: [IconRefreshCcw],
+      html: `<icon-refresh-ccw></icon-refresh-ccw>`,
+    });
 
-    const element = await page.find('icon-refresh-ccw');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(RefreshCcw);
+
+    expect(page.root).toEqualHtml(`
+      <icon-refresh-ccw class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-refresh-ccw>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-refresh-ccw stroke="blue"></icon-refresh-ccw>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRefreshCcw],
+      html: `<icon-refresh-ccw stroke="blue"></icon-refresh-ccw>`,
+    });
 
-    const element = await page.find('icon-refresh-ccw');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(RefreshCcw);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-refresh-ccw > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-refresh-ccw class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-refresh-ccw>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-refresh-ccw stroke-width="2"></icon-refresh-ccw>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRefreshCcw],
+      html: `<icon-refresh-ccw stroke-width="2"></icon-refresh-ccw>`,
+    });
 
-    const element = await page.find('icon-refresh-ccw');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(RefreshCcw);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-refresh-ccw > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-refresh-ccw class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-refresh-ccw>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMessageSquare } from '../message-square';
+import { createElement, MessageSquare }  from 'lucide';
 
 describe('icon-message-square', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-message-square></icon-message-square>');
+    const page = await newSpecPage({
+      components: [IconMessageSquare],
+      html: `<icon-message-square></icon-message-square>`,
+    });
 
-    const element = await page.find('icon-message-square');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(MessageSquare);
+
+    expect(page.root).toEqualHtml(`
+      <icon-message-square class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-message-square>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-message-square stroke="blue"></icon-message-square>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMessageSquare],
+      html: `<icon-message-square stroke="blue"></icon-message-square>`,
+    });
 
-    const element = await page.find('icon-message-square');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(MessageSquare);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-message-square > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-message-square class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-message-square>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-message-square stroke-width="2"></icon-message-square>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMessageSquare],
+      html: `<icon-message-square stroke-width="2"></icon-message-square>`,
+    });
 
-    const element = await page.find('icon-message-square');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(MessageSquare);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-message-square > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-message-square class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-message-square>
+    `);
   });
 });

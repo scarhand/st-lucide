@@ -1,11 +1,11 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import feather from 'feather-icons';
+import { Award, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
   tag: 'icon-award'
 })
-export class Award {
+export class IconAward {
   @Element() el: any;
 
   @Prop({ attribute: 'alignment-baseline' }) alignmentBaseline: any;
@@ -90,7 +90,9 @@ export class Award {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    return <Host innerHTML={feather.icons['award'].toSvg({...attributesToObject(this.el), ...this.getProps()})} class="st-feather-icon"></Host>;
+    const inner = createElement(Award);
+    Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
+    return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }
 
   private getProps() {

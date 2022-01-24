@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCodesandbox } from '../codesandbox';
+import { createElement, Codesandbox }  from 'lucide';
 
 describe('icon-codesandbox', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-codesandbox></icon-codesandbox>');
+    const page = await newSpecPage({
+      components: [IconCodesandbox],
+      html: `<icon-codesandbox></icon-codesandbox>`,
+    });
 
-    const element = await page.find('icon-codesandbox');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Codesandbox);
+
+    expect(page.root).toEqualHtml(`
+      <icon-codesandbox class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-codesandbox>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-codesandbox stroke="blue"></icon-codesandbox>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCodesandbox],
+      html: `<icon-codesandbox stroke="blue"></icon-codesandbox>`,
+    });
 
-    const element = await page.find('icon-codesandbox');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Codesandbox);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-codesandbox > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-codesandbox class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-codesandbox>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-codesandbox stroke-width="2"></icon-codesandbox>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCodesandbox],
+      html: `<icon-codesandbox stroke-width="2"></icon-codesandbox>`,
+    });
 
-    const element = await page.find('icon-codesandbox');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Codesandbox);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-codesandbox > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-codesandbox class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-codesandbox>
+    `);
   });
 });

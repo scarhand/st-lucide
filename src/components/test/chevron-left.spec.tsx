@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconChevronLeft } from '../chevron-left';
+import { createElement, ChevronLeft }  from 'lucide';
 
 describe('icon-chevron-left', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-chevron-left></icon-chevron-left>');
+    const page = await newSpecPage({
+      components: [IconChevronLeft],
+      html: `<icon-chevron-left></icon-chevron-left>`,
+    });
 
-    const element = await page.find('icon-chevron-left');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ChevronLeft);
+
+    expect(page.root).toEqualHtml(`
+      <icon-chevron-left class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-chevron-left>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-chevron-left stroke="blue"></icon-chevron-left>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconChevronLeft],
+      html: `<icon-chevron-left stroke="blue"></icon-chevron-left>`,
+    });
 
-    const element = await page.find('icon-chevron-left');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ChevronLeft);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-chevron-left > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-chevron-left class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-chevron-left>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-chevron-left stroke-width="2"></icon-chevron-left>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconChevronLeft],
+      html: `<icon-chevron-left stroke-width="2"></icon-chevron-left>`,
+    });
 
-    const element = await page.find('icon-chevron-left');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ChevronLeft);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-chevron-left > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-chevron-left class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-chevron-left>
+    `);
   });
 });

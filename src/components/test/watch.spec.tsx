@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconWatch } from '../watch';
+import { createElement, Watch }  from 'lucide';
 
 describe('icon-watch', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-watch></icon-watch>');
+    const page = await newSpecPage({
+      components: [IconWatch],
+      html: `<icon-watch></icon-watch>`,
+    });
 
-    const element = await page.find('icon-watch');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Watch);
+
+    expect(page.root).toEqualHtml(`
+      <icon-watch class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-watch>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-watch stroke="blue"></icon-watch>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconWatch],
+      html: `<icon-watch stroke="blue"></icon-watch>`,
+    });
 
-    const element = await page.find('icon-watch');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Watch);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-watch > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-watch class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-watch>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-watch stroke-width="2"></icon-watch>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconWatch],
+      html: `<icon-watch stroke-width="2"></icon-watch>`,
+    });
 
-    const element = await page.find('icon-watch');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Watch);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-watch > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-watch class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-watch>
+    `);
   });
 });

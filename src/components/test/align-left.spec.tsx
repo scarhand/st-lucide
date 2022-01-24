@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconAlignLeft } from '../align-left';
+import { createElement, AlignLeft }  from 'lucide';
 
 describe('icon-align-left', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-align-left></icon-align-left>');
+    const page = await newSpecPage({
+      components: [IconAlignLeft],
+      html: `<icon-align-left></icon-align-left>`,
+    });
 
-    const element = await page.find('icon-align-left');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(AlignLeft);
+
+    expect(page.root).toEqualHtml(`
+      <icon-align-left class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-align-left>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-align-left stroke="blue"></icon-align-left>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAlignLeft],
+      html: `<icon-align-left stroke="blue"></icon-align-left>`,
+    });
 
-    const element = await page.find('icon-align-left');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(AlignLeft);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-align-left > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-align-left class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-align-left>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-align-left stroke-width="2"></icon-align-left>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAlignLeft],
+      html: `<icon-align-left stroke-width="2"></icon-align-left>`,
+    });
 
-    const element = await page.find('icon-align-left');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(AlignLeft);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-align-left > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-align-left class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-align-left>
+    `);
   });
 });

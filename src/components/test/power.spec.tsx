@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconPower } from '../power';
+import { createElement, Power }  from 'lucide';
 
 describe('icon-power', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-power></icon-power>');
+    const page = await newSpecPage({
+      components: [IconPower],
+      html: `<icon-power></icon-power>`,
+    });
 
-    const element = await page.find('icon-power');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Power);
+
+    expect(page.root).toEqualHtml(`
+      <icon-power class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-power>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-power stroke="blue"></icon-power>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPower],
+      html: `<icon-power stroke="blue"></icon-power>`,
+    });
 
-    const element = await page.find('icon-power');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Power);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-power > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-power class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-power>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-power stroke-width="2"></icon-power>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPower],
+      html: `<icon-power stroke-width="2"></icon-power>`,
+    });
 
-    const element = await page.find('icon-power');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Power);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-power > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-power class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-power>
+    `);
   });
 });

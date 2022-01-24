@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCalendar } from '../calendar';
+import { createElement, Calendar }  from 'lucide';
 
 describe('icon-calendar', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-calendar></icon-calendar>');
+    const page = await newSpecPage({
+      components: [IconCalendar],
+      html: `<icon-calendar></icon-calendar>`,
+    });
 
-    const element = await page.find('icon-calendar');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Calendar);
+
+    expect(page.root).toEqualHtml(`
+      <icon-calendar class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-calendar>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-calendar stroke="blue"></icon-calendar>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCalendar],
+      html: `<icon-calendar stroke="blue"></icon-calendar>`,
+    });
 
-    const element = await page.find('icon-calendar');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Calendar);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-calendar > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-calendar class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-calendar>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-calendar stroke-width="2"></icon-calendar>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCalendar],
+      html: `<icon-calendar stroke-width="2"></icon-calendar>`,
+    });
 
-    const element = await page.find('icon-calendar');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Calendar);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-calendar > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-calendar class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-calendar>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconTrash } from '../trash';
+import { createElement, Trash }  from 'lucide';
 
 describe('icon-trash', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-trash></icon-trash>');
+    const page = await newSpecPage({
+      components: [IconTrash],
+      html: `<icon-trash></icon-trash>`,
+    });
 
-    const element = await page.find('icon-trash');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Trash);
+
+    expect(page.root).toEqualHtml(`
+      <icon-trash class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-trash>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-trash stroke="blue"></icon-trash>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTrash],
+      html: `<icon-trash stroke="blue"></icon-trash>`,
+    });
 
-    const element = await page.find('icon-trash');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Trash);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-trash > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-trash class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-trash>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-trash stroke-width="2"></icon-trash>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTrash],
+      html: `<icon-trash stroke-width="2"></icon-trash>`,
+    });
 
-    const element = await page.find('icon-trash');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Trash);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-trash > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-trash class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-trash>
+    `);
   });
 });

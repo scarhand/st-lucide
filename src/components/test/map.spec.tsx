@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMap } from '../map';
+import { createElement, Map }  from 'lucide';
 
 describe('icon-map', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-map></icon-map>');
+    const page = await newSpecPage({
+      components: [IconMap],
+      html: `<icon-map></icon-map>`,
+    });
 
-    const element = await page.find('icon-map');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Map);
+
+    expect(page.root).toEqualHtml(`
+      <icon-map class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-map>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-map stroke="blue"></icon-map>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMap],
+      html: `<icon-map stroke="blue"></icon-map>`,
+    });
 
-    const element = await page.find('icon-map');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Map);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-map > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-map class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-map>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-map stroke-width="2"></icon-map>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMap],
+      html: `<icon-map stroke-width="2"></icon-map>`,
+    });
 
-    const element = await page.find('icon-map');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Map);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-map > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-map class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-map>
+    `);
   });
 });

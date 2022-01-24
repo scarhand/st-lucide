@@ -1,11 +1,11 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import feather from 'feather-icons';
+import { Divide, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
   tag: 'icon-divide'
 })
-export class Divide {
+export class IconDivide {
   @Element() el: any;
 
   @Prop({ attribute: 'alignment-baseline' }) alignmentBaseline: any;
@@ -90,7 +90,9 @@ export class Divide {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    return <Host innerHTML={feather.icons['divide'].toSvg({...attributesToObject(this.el), ...this.getProps()})} class="st-feather-icon"></Host>;
+    const inner = createElement(Divide);
+    Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
+    return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }
 
   private getProps() {

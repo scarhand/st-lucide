@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconPause } from '../pause';
+import { createElement, Pause }  from 'lucide';
 
 describe('icon-pause', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-pause></icon-pause>');
+    const page = await newSpecPage({
+      components: [IconPause],
+      html: `<icon-pause></icon-pause>`,
+    });
 
-    const element = await page.find('icon-pause');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Pause);
+
+    expect(page.root).toEqualHtml(`
+      <icon-pause class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-pause>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-pause stroke="blue"></icon-pause>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPause],
+      html: `<icon-pause stroke="blue"></icon-pause>`,
+    });
 
-    const element = await page.find('icon-pause');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Pause);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-pause > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-pause class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-pause>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-pause stroke-width="2"></icon-pause>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPause],
+      html: `<icon-pause stroke-width="2"></icon-pause>`,
+    });
 
-    const element = await page.find('icon-pause');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Pause);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-pause > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-pause class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-pause>
+    `);
   });
 });

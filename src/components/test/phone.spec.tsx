@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconPhone } from '../phone';
+import { createElement, Phone }  from 'lucide';
 
 describe('icon-phone', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-phone></icon-phone>');
+    const page = await newSpecPage({
+      components: [IconPhone],
+      html: `<icon-phone></icon-phone>`,
+    });
 
-    const element = await page.find('icon-phone');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Phone);
+
+    expect(page.root).toEqualHtml(`
+      <icon-phone class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-phone>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-phone stroke="blue"></icon-phone>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPhone],
+      html: `<icon-phone stroke="blue"></icon-phone>`,
+    });
 
-    const element = await page.find('icon-phone');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Phone);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-phone > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-phone class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-phone>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-phone stroke-width="2"></icon-phone>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPhone],
+      html: `<icon-phone stroke-width="2"></icon-phone>`,
+    });
 
-    const element = await page.find('icon-phone');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Phone);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-phone > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-phone class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-phone>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconBriefcase } from '../briefcase';
+import { createElement, Briefcase }  from 'lucide';
 
 describe('icon-briefcase', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-briefcase></icon-briefcase>');
+    const page = await newSpecPage({
+      components: [IconBriefcase],
+      html: `<icon-briefcase></icon-briefcase>`,
+    });
 
-    const element = await page.find('icon-briefcase');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Briefcase);
+
+    expect(page.root).toEqualHtml(`
+      <icon-briefcase class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-briefcase>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-briefcase stroke="blue"></icon-briefcase>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBriefcase],
+      html: `<icon-briefcase stroke="blue"></icon-briefcase>`,
+    });
 
-    const element = await page.find('icon-briefcase');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Briefcase);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-briefcase > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-briefcase class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-briefcase>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-briefcase stroke-width="2"></icon-briefcase>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBriefcase],
+      html: `<icon-briefcase stroke-width="2"></icon-briefcase>`,
+    });
 
-    const element = await page.find('icon-briefcase');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Briefcase);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-briefcase > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-briefcase class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-briefcase>
+    `);
   });
 });

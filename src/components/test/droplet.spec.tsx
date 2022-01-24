@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconDroplet } from '../droplet';
+import { createElement, Droplet }  from 'lucide';
 
 describe('icon-droplet', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-droplet></icon-droplet>');
+    const page = await newSpecPage({
+      components: [IconDroplet],
+      html: `<icon-droplet></icon-droplet>`,
+    });
 
-    const element = await page.find('icon-droplet');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Droplet);
+
+    expect(page.root).toEqualHtml(`
+      <icon-droplet class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-droplet>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-droplet stroke="blue"></icon-droplet>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconDroplet],
+      html: `<icon-droplet stroke="blue"></icon-droplet>`,
+    });
 
-    const element = await page.find('icon-droplet');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Droplet);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-droplet > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-droplet class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-droplet>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-droplet stroke-width="2"></icon-droplet>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconDroplet],
+      html: `<icon-droplet stroke-width="2"></icon-droplet>`,
+    });
 
-    const element = await page.find('icon-droplet');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Droplet);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-droplet > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-droplet class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-droplet>
+    `);
   });
 });

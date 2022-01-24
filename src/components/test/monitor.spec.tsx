@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMonitor } from '../monitor';
+import { createElement, Monitor }  from 'lucide';
 
 describe('icon-monitor', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-monitor></icon-monitor>');
+    const page = await newSpecPage({
+      components: [IconMonitor],
+      html: `<icon-monitor></icon-monitor>`,
+    });
 
-    const element = await page.find('icon-monitor');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Monitor);
+
+    expect(page.root).toEqualHtml(`
+      <icon-monitor class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-monitor>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-monitor stroke="blue"></icon-monitor>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMonitor],
+      html: `<icon-monitor stroke="blue"></icon-monitor>`,
+    });
 
-    const element = await page.find('icon-monitor');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Monitor);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-monitor > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-monitor class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-monitor>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-monitor stroke-width="2"></icon-monitor>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMonitor],
+      html: `<icon-monitor stroke-width="2"></icon-monitor>`,
+    });
 
-    const element = await page.find('icon-monitor');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Monitor);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-monitor > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-monitor class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-monitor>
+    `);
   });
 });

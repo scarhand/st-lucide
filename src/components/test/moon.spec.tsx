@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMoon } from '../moon';
+import { createElement, Moon }  from 'lucide';
 
 describe('icon-moon', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-moon></icon-moon>');
+    const page = await newSpecPage({
+      components: [IconMoon],
+      html: `<icon-moon></icon-moon>`,
+    });
 
-    const element = await page.find('icon-moon');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Moon);
+
+    expect(page.root).toEqualHtml(`
+      <icon-moon class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-moon>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-moon stroke="blue"></icon-moon>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMoon],
+      html: `<icon-moon stroke="blue"></icon-moon>`,
+    });
 
-    const element = await page.find('icon-moon');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Moon);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-moon > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-moon class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-moon>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-moon stroke-width="2"></icon-moon>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMoon],
+      html: `<icon-moon stroke-width="2"></icon-moon>`,
+    });
 
-    const element = await page.find('icon-moon');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Moon);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-moon > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-moon class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-moon>
+    `);
   });
 });

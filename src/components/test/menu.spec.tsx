@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMenu } from '../menu';
+import { createElement, Menu }  from 'lucide';
 
 describe('icon-menu', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-menu></icon-menu>');
+    const page = await newSpecPage({
+      components: [IconMenu],
+      html: `<icon-menu></icon-menu>`,
+    });
 
-    const element = await page.find('icon-menu');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Menu);
+
+    expect(page.root).toEqualHtml(`
+      <icon-menu class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-menu>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-menu stroke="blue"></icon-menu>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMenu],
+      html: `<icon-menu stroke="blue"></icon-menu>`,
+    });
 
-    const element = await page.find('icon-menu');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Menu);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-menu > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-menu class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-menu>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-menu stroke-width="2"></icon-menu>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMenu],
+      html: `<icon-menu stroke-width="2"></icon-menu>`,
+    });
 
-    const element = await page.find('icon-menu');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Menu);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-menu > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-menu class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-menu>
+    `);
   });
 });

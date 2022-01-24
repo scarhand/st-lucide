@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMicOff } from '../mic-off';
+import { createElement, MicOff }  from 'lucide';
 
 describe('icon-mic-off', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-mic-off></icon-mic-off>');
+    const page = await newSpecPage({
+      components: [IconMicOff],
+      html: `<icon-mic-off></icon-mic-off>`,
+    });
 
-    const element = await page.find('icon-mic-off');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(MicOff);
+
+    expect(page.root).toEqualHtml(`
+      <icon-mic-off class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-mic-off>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-mic-off stroke="blue"></icon-mic-off>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMicOff],
+      html: `<icon-mic-off stroke="blue"></icon-mic-off>`,
+    });
 
-    const element = await page.find('icon-mic-off');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(MicOff);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-mic-off > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-mic-off class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-mic-off>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-mic-off stroke-width="2"></icon-mic-off>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMicOff],
+      html: `<icon-mic-off stroke-width="2"></icon-mic-off>`,
+    });
 
-    const element = await page.find('icon-mic-off');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(MicOff);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-mic-off > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-mic-off class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-mic-off>
+    `);
   });
 });

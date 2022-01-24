@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconTriangle } from '../triangle';
+import { createElement, Triangle }  from 'lucide';
 
 describe('icon-triangle', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-triangle></icon-triangle>');
+    const page = await newSpecPage({
+      components: [IconTriangle],
+      html: `<icon-triangle></icon-triangle>`,
+    });
 
-    const element = await page.find('icon-triangle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Triangle);
+
+    expect(page.root).toEqualHtml(`
+      <icon-triangle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-triangle>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-triangle stroke="blue"></icon-triangle>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTriangle],
+      html: `<icon-triangle stroke="blue"></icon-triangle>`,
+    });
 
-    const element = await page.find('icon-triangle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Triangle);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-triangle > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-triangle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-triangle>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-triangle stroke-width="2"></icon-triangle>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTriangle],
+      html: `<icon-triangle stroke-width="2"></icon-triangle>`,
+    });
 
-    const element = await page.find('icon-triangle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Triangle);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-triangle > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-triangle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-triangle>
+    `);
   });
 });

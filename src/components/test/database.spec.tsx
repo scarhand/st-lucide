@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconDatabase } from '../database';
+import { createElement, Database }  from 'lucide';
 
 describe('icon-database', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-database></icon-database>');
+    const page = await newSpecPage({
+      components: [IconDatabase],
+      html: `<icon-database></icon-database>`,
+    });
 
-    const element = await page.find('icon-database');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Database);
+
+    expect(page.root).toEqualHtml(`
+      <icon-database class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-database>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-database stroke="blue"></icon-database>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconDatabase],
+      html: `<icon-database stroke="blue"></icon-database>`,
+    });
 
-    const element = await page.find('icon-database');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Database);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-database > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-database class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-database>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-database stroke-width="2"></icon-database>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconDatabase],
+      html: `<icon-database stroke-width="2"></icon-database>`,
+    });
 
-    const element = await page.find('icon-database');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Database);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-database > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-database class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-database>
+    `);
   });
 });

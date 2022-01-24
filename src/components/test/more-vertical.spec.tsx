@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMoreVertical } from '../more-vertical';
+import { createElement, MoreVertical }  from 'lucide';
 
 describe('icon-more-vertical', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-more-vertical></icon-more-vertical>');
+    const page = await newSpecPage({
+      components: [IconMoreVertical],
+      html: `<icon-more-vertical></icon-more-vertical>`,
+    });
 
-    const element = await page.find('icon-more-vertical');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(MoreVertical);
+
+    expect(page.root).toEqualHtml(`
+      <icon-more-vertical class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-more-vertical>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-more-vertical stroke="blue"></icon-more-vertical>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMoreVertical],
+      html: `<icon-more-vertical stroke="blue"></icon-more-vertical>`,
+    });
 
-    const element = await page.find('icon-more-vertical');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(MoreVertical);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-more-vertical > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-more-vertical class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-more-vertical>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-more-vertical stroke-width="2"></icon-more-vertical>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMoreVertical],
+      html: `<icon-more-vertical stroke-width="2"></icon-more-vertical>`,
+    });
 
-    const element = await page.find('icon-more-vertical');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(MoreVertical);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-more-vertical > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-more-vertical class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-more-vertical>
+    `);
   });
 });

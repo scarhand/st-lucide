@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconRefreshCw } from '../refresh-cw';
+import { createElement, RefreshCw }  from 'lucide';
 
 describe('icon-refresh-cw', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-refresh-cw></icon-refresh-cw>');
+    const page = await newSpecPage({
+      components: [IconRefreshCw],
+      html: `<icon-refresh-cw></icon-refresh-cw>`,
+    });
 
-    const element = await page.find('icon-refresh-cw');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(RefreshCw);
+
+    expect(page.root).toEqualHtml(`
+      <icon-refresh-cw class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-refresh-cw>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-refresh-cw stroke="blue"></icon-refresh-cw>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRefreshCw],
+      html: `<icon-refresh-cw stroke="blue"></icon-refresh-cw>`,
+    });
 
-    const element = await page.find('icon-refresh-cw');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(RefreshCw);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-refresh-cw > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-refresh-cw class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-refresh-cw>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-refresh-cw stroke-width="2"></icon-refresh-cw>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRefreshCw],
+      html: `<icon-refresh-cw stroke-width="2"></icon-refresh-cw>`,
+    });
 
-    const element = await page.find('icon-refresh-cw');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(RefreshCw);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-refresh-cw > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-refresh-cw class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-refresh-cw>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconChevronsDown } from '../chevrons-down';
+import { createElement, ChevronsDown }  from 'lucide';
 
 describe('icon-chevrons-down', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-chevrons-down></icon-chevrons-down>');
+    const page = await newSpecPage({
+      components: [IconChevronsDown],
+      html: `<icon-chevrons-down></icon-chevrons-down>`,
+    });
 
-    const element = await page.find('icon-chevrons-down');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ChevronsDown);
+
+    expect(page.root).toEqualHtml(`
+      <icon-chevrons-down class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-chevrons-down>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-chevrons-down stroke="blue"></icon-chevrons-down>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconChevronsDown],
+      html: `<icon-chevrons-down stroke="blue"></icon-chevrons-down>`,
+    });
 
-    const element = await page.find('icon-chevrons-down');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ChevronsDown);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-chevrons-down > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-chevrons-down class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-chevrons-down>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-chevrons-down stroke-width="2"></icon-chevrons-down>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconChevronsDown],
+      html: `<icon-chevrons-down stroke-width="2"></icon-chevrons-down>`,
+    });
 
-    const element = await page.find('icon-chevrons-down');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ChevronsDown);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-chevrons-down > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-chevrons-down class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-chevrons-down>
+    `);
   });
 });

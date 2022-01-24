@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconBox } from '../box';
+import { createElement, Box }  from 'lucide';
 
 describe('icon-box', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-box></icon-box>');
+    const page = await newSpecPage({
+      components: [IconBox],
+      html: `<icon-box></icon-box>`,
+    });
 
-    const element = await page.find('icon-box');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Box);
+
+    expect(page.root).toEqualHtml(`
+      <icon-box class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-box>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-box stroke="blue"></icon-box>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBox],
+      html: `<icon-box stroke="blue"></icon-box>`,
+    });
 
-    const element = await page.find('icon-box');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Box);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-box > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-box class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-box>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-box stroke-width="2"></icon-box>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconBox],
+      html: `<icon-box stroke-width="2"></icon-box>`,
+    });
 
-    const element = await page.find('icon-box');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Box);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-box > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-box class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-box>
+    `);
   });
 });

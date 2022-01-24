@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconX } from '../x';
+import { createElement, X }  from 'lucide';
 
 describe('icon-x', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-x></icon-x>');
+    const page = await newSpecPage({
+      components: [IconX],
+      html: `<icon-x></icon-x>`,
+    });
 
-    const element = await page.find('icon-x');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(X);
+
+    expect(page.root).toEqualHtml(`
+      <icon-x class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-x>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-x stroke="blue"></icon-x>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconX],
+      html: `<icon-x stroke="blue"></icon-x>`,
+    });
 
-    const element = await page.find('icon-x');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(X);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-x > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-x class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-x>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-x stroke-width="2"></icon-x>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconX],
+      html: `<icon-x stroke-width="2"></icon-x>`,
+    });
 
-    const element = await page.find('icon-x');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(X);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-x > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-x class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-x>
+    `);
   });
 });

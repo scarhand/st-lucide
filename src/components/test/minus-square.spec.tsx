@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMinusSquare } from '../minus-square';
+import { createElement, MinusSquare }  from 'lucide';
 
 describe('icon-minus-square', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-minus-square></icon-minus-square>');
+    const page = await newSpecPage({
+      components: [IconMinusSquare],
+      html: `<icon-minus-square></icon-minus-square>`,
+    });
 
-    const element = await page.find('icon-minus-square');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(MinusSquare);
+
+    expect(page.root).toEqualHtml(`
+      <icon-minus-square class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-minus-square>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-minus-square stroke="blue"></icon-minus-square>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMinusSquare],
+      html: `<icon-minus-square stroke="blue"></icon-minus-square>`,
+    });
 
-    const element = await page.find('icon-minus-square');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(MinusSquare);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-minus-square > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-minus-square class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-minus-square>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-minus-square stroke-width="2"></icon-minus-square>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMinusSquare],
+      html: `<icon-minus-square stroke-width="2"></icon-minus-square>`,
+    });
 
-    const element = await page.find('icon-minus-square');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(MinusSquare);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-minus-square > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-minus-square class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-minus-square>
+    `);
   });
 });

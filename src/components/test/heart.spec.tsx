@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconHeart } from '../heart';
+import { createElement, Heart }  from 'lucide';
 
 describe('icon-heart', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-heart></icon-heart>');
+    const page = await newSpecPage({
+      components: [IconHeart],
+      html: `<icon-heart></icon-heart>`,
+    });
 
-    const element = await page.find('icon-heart');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Heart);
+
+    expect(page.root).toEqualHtml(`
+      <icon-heart class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-heart>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-heart stroke="blue"></icon-heart>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconHeart],
+      html: `<icon-heart stroke="blue"></icon-heart>`,
+    });
 
-    const element = await page.find('icon-heart');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Heart);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-heart > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-heart class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-heart>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-heart stroke-width="2"></icon-heart>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconHeart],
+      html: `<icon-heart stroke-width="2"></icon-heart>`,
+    });
 
-    const element = await page.find('icon-heart');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Heart);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-heart > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-heart class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-heart>
+    `);
   });
 });
