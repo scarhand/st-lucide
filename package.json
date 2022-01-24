@@ -1,6 +1,6 @@
 {
-  "name": "st-feather",
-  "version": "0.0.7",
+  "name": "st-lucide",
+  "version": "0.0.8",
   "description": "Feather icons as StencilJS components",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -9,7 +9,7 @@
   "types": "dist/custom-elements/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/st-feather/st-feather.esm.js",
+  "unpkg": "dist/st-lucide/st-lucide.esm.js",
   "files": [
     "dist/",
     "loader/"
@@ -30,7 +30,8 @@
     "icons",
     "svg",
     "inline",
-    "feather"
+    "feather",
+    "lucide"
   ],
   "author": "Niels van der Zanden",
   "bugs": {
@@ -39,7 +40,7 @@
   "homepage": "https://github.com/scarhand/st-feather#readme",
   "dependencies": {
     "@stencil/core": "^2.0.1",
-    "feather-icons": "^4.28.0"
+    "lucide": "^0.16.28"
   },
   "license": "MIT",
   "devDependencies": {
