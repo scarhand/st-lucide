@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCloud } from '../cloud';
+import { createElement, Cloud }  from 'lucide';
 
 describe('icon-cloud', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud></icon-cloud>');
+    const page = await newSpecPage({
+      components: [IconCloud],
+      html: `<icon-cloud></icon-cloud>`,
+    });
 
-    const element = await page.find('icon-cloud');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Cloud);
+
+    expect(page.root).toEqualHtml(`
+      <icon-cloud class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-cloud>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud stroke="blue"></icon-cloud>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCloud],
+      html: `<icon-cloud stroke="blue"></icon-cloud>`,
+    });
 
-    const element = await page.find('icon-cloud');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Cloud);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-cloud > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-cloud class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-cloud>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud stroke-width="2"></icon-cloud>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCloud],
+      html: `<icon-cloud stroke-width="2"></icon-cloud>`,
+    });
 
-    const element = await page.find('icon-cloud');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Cloud);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-cloud > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-cloud class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-cloud>
+    `);
   });
 });

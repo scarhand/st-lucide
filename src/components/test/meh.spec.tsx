@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMeh } from '../meh';
+import { createElement, Meh }  from 'lucide';
 
 describe('icon-meh', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-meh></icon-meh>');
+    const page = await newSpecPage({
+      components: [IconMeh],
+      html: `<icon-meh></icon-meh>`,
+    });
 
-    const element = await page.find('icon-meh');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Meh);
+
+    expect(page.root).toEqualHtml(`
+      <icon-meh class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-meh>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-meh stroke="blue"></icon-meh>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMeh],
+      html: `<icon-meh stroke="blue"></icon-meh>`,
+    });
 
-    const element = await page.find('icon-meh');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Meh);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-meh > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-meh class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-meh>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-meh stroke-width="2"></icon-meh>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMeh],
+      html: `<icon-meh stroke-width="2"></icon-meh>`,
+    });
 
-    const element = await page.find('icon-meh');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Meh);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-meh > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-meh class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-meh>
+    `);
   });
 });

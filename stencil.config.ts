@@ -1,7 +1,7 @@
 import { Config } from '@stencil/core';
 
 export const config: Config = {
-  namespace: 'st-feather',
+  namespace: 'st-lucide',
   outputTargets: [
     {
       type: 'dist',

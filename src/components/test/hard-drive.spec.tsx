@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconHardDrive } from '../hard-drive';
+import { createElement, HardDrive }  from 'lucide';
 
 describe('icon-hard-drive', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-hard-drive></icon-hard-drive>');
+    const page = await newSpecPage({
+      components: [IconHardDrive],
+      html: `<icon-hard-drive></icon-hard-drive>`,
+    });
 
-    const element = await page.find('icon-hard-drive');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(HardDrive);
+
+    expect(page.root).toEqualHtml(`
+      <icon-hard-drive class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-hard-drive>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-hard-drive stroke="blue"></icon-hard-drive>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconHardDrive],
+      html: `<icon-hard-drive stroke="blue"></icon-hard-drive>`,
+    });
 
-    const element = await page.find('icon-hard-drive');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(HardDrive);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-hard-drive > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-hard-drive class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-hard-drive>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-hard-drive stroke-width="2"></icon-hard-drive>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconHardDrive],
+      html: `<icon-hard-drive stroke-width="2"></icon-hard-drive>`,
+    });
 
-    const element = await page.find('icon-hard-drive');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(HardDrive);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-hard-drive > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-hard-drive class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-hard-drive>
+    `);
   });
 });

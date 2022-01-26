@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconSliders } from '../sliders';
+import { createElement, Sliders }  from 'lucide';
 
 describe('icon-sliders', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-sliders></icon-sliders>');
+    const page = await newSpecPage({
+      components: [IconSliders],
+      html: `<icon-sliders></icon-sliders>`,
+    });
 
-    const element = await page.find('icon-sliders');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Sliders);
+
+    expect(page.root).toEqualHtml(`
+      <icon-sliders class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-sliders>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-sliders stroke="blue"></icon-sliders>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSliders],
+      html: `<icon-sliders stroke="blue"></icon-sliders>`,
+    });
 
-    const element = await page.find('icon-sliders');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Sliders);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-sliders > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-sliders class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-sliders>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-sliders stroke-width="2"></icon-sliders>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSliders],
+      html: `<icon-sliders stroke-width="2"></icon-sliders>`,
+    });
 
-    const element = await page.find('icon-sliders');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Sliders);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-sliders > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-sliders class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-sliders>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconArrowUp } from '../arrow-up';
+import { createElement, ArrowUp }  from 'lucide';
 
 describe('icon-arrow-up', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-arrow-up></icon-arrow-up>');
+    const page = await newSpecPage({
+      components: [IconArrowUp],
+      html: `<icon-arrow-up></icon-arrow-up>`,
+    });
 
-    const element = await page.find('icon-arrow-up');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ArrowUp);
+
+    expect(page.root).toEqualHtml(`
+      <icon-arrow-up class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-arrow-up>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-arrow-up stroke="blue"></icon-arrow-up>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconArrowUp],
+      html: `<icon-arrow-up stroke="blue"></icon-arrow-up>`,
+    });
 
-    const element = await page.find('icon-arrow-up');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ArrowUp);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-arrow-up > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-arrow-up class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-arrow-up>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-arrow-up stroke-width="2"></icon-arrow-up>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconArrowUp],
+      html: `<icon-arrow-up stroke-width="2"></icon-arrow-up>`,
+    });
 
-    const element = await page.find('icon-arrow-up');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ArrowUp);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-arrow-up > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-arrow-up class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-arrow-up>
+    `);
   });
 });

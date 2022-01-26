@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconClipboard } from '../clipboard';
+import { createElement, Clipboard }  from 'lucide';
 
 describe('icon-clipboard', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-clipboard></icon-clipboard>');
+    const page = await newSpecPage({
+      components: [IconClipboard],
+      html: `<icon-clipboard></icon-clipboard>`,
+    });
 
-    const element = await page.find('icon-clipboard');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Clipboard);
+
+    expect(page.root).toEqualHtml(`
+      <icon-clipboard class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-clipboard>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-clipboard stroke="blue"></icon-clipboard>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconClipboard],
+      html: `<icon-clipboard stroke="blue"></icon-clipboard>`,
+    });
 
-    const element = await page.find('icon-clipboard');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Clipboard);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-clipboard > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-clipboard class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-clipboard>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-clipboard stroke-width="2"></icon-clipboard>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconClipboard],
+      html: `<icon-clipboard stroke-width="2"></icon-clipboard>`,
+    });
 
-    const element = await page.find('icon-clipboard');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Clipboard);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-clipboard > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-clipboard class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-clipboard>
+    `);
   });
 });

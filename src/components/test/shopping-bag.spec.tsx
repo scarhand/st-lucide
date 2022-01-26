@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconShoppingBag } from '../shopping-bag';
+import { createElement, ShoppingBag }  from 'lucide';
 
 describe('icon-shopping-bag', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-shopping-bag></icon-shopping-bag>');
+    const page = await newSpecPage({
+      components: [IconShoppingBag],
+      html: `<icon-shopping-bag></icon-shopping-bag>`,
+    });
 
-    const element = await page.find('icon-shopping-bag');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ShoppingBag);
+
+    expect(page.root).toEqualHtml(`
+      <icon-shopping-bag class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-shopping-bag>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-shopping-bag stroke="blue"></icon-shopping-bag>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconShoppingBag],
+      html: `<icon-shopping-bag stroke="blue"></icon-shopping-bag>`,
+    });
 
-    const element = await page.find('icon-shopping-bag');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ShoppingBag);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-shopping-bag > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-shopping-bag class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-shopping-bag>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-shopping-bag stroke-width="2"></icon-shopping-bag>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconShoppingBag],
+      html: `<icon-shopping-bag stroke-width="2"></icon-shopping-bag>`,
+    });
 
-    const element = await page.find('icon-shopping-bag');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ShoppingBag);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-shopping-bag > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-shopping-bag class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-shopping-bag>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconUserCheck } from '../user-check';
+import { createElement, UserCheck }  from 'lucide';
 
 describe('icon-user-check', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-user-check></icon-user-check>');
+    const page = await newSpecPage({
+      components: [IconUserCheck],
+      html: `<icon-user-check></icon-user-check>`,
+    });
 
-    const element = await page.find('icon-user-check');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(UserCheck);
+
+    expect(page.root).toEqualHtml(`
+      <icon-user-check class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-user-check>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-user-check stroke="blue"></icon-user-check>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconUserCheck],
+      html: `<icon-user-check stroke="blue"></icon-user-check>`,
+    });
 
-    const element = await page.find('icon-user-check');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(UserCheck);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-user-check > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-user-check class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-user-check>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-user-check stroke-width="2"></icon-user-check>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconUserCheck],
+      html: `<icon-user-check stroke-width="2"></icon-user-check>`,
+    });
 
-    const element = await page.find('icon-user-check');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(UserCheck);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-user-check > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-user-check class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-user-check>
+    `);
   });
 });

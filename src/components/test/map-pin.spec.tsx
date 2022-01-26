@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMapPin } from '../map-pin';
+import { createElement, MapPin }  from 'lucide';
 
 describe('icon-map-pin', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-map-pin></icon-map-pin>');
+    const page = await newSpecPage({
+      components: [IconMapPin],
+      html: `<icon-map-pin></icon-map-pin>`,
+    });
 
-    const element = await page.find('icon-map-pin');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(MapPin);
+
+    expect(page.root).toEqualHtml(`
+      <icon-map-pin class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-map-pin>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-map-pin stroke="blue"></icon-map-pin>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMapPin],
+      html: `<icon-map-pin stroke="blue"></icon-map-pin>`,
+    });
 
-    const element = await page.find('icon-map-pin');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(MapPin);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-map-pin > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-map-pin class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-map-pin>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-map-pin stroke-width="2"></icon-map-pin>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMapPin],
+      html: `<icon-map-pin stroke-width="2"></icon-map-pin>`,
+    });
 
-    const element = await page.find('icon-map-pin');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(MapPin);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-map-pin > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-map-pin class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-map-pin>
+    `);
   });
 });

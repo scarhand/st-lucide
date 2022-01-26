@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMoreHorizontal } from '../more-horizontal';
+import { createElement, MoreHorizontal }  from 'lucide';
 
 describe('icon-more-horizontal', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-more-horizontal></icon-more-horizontal>');
+    const page = await newSpecPage({
+      components: [IconMoreHorizontal],
+      html: `<icon-more-horizontal></icon-more-horizontal>`,
+    });
 
-    const element = await page.find('icon-more-horizontal');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(MoreHorizontal);
+
+    expect(page.root).toEqualHtml(`
+      <icon-more-horizontal class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-more-horizontal>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-more-horizontal stroke="blue"></icon-more-horizontal>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMoreHorizontal],
+      html: `<icon-more-horizontal stroke="blue"></icon-more-horizontal>`,
+    });
 
-    const element = await page.find('icon-more-horizontal');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(MoreHorizontal);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-more-horizontal > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-more-horizontal class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-more-horizontal>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-more-horizontal stroke-width="2"></icon-more-horizontal>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMoreHorizontal],
+      html: `<icon-more-horizontal stroke-width="2"></icon-more-horizontal>`,
+    });
 
-    const element = await page.find('icon-more-horizontal');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(MoreHorizontal);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-more-horizontal > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-more-horizontal class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-more-horizontal>
+    `);
   });
 });

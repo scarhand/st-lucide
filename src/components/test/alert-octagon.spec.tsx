@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconAlertOctagon } from '../alert-octagon';
+import { createElement, AlertOctagon }  from 'lucide';
 
 describe('icon-alert-octagon', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-alert-octagon></icon-alert-octagon>');
+    const page = await newSpecPage({
+      components: [IconAlertOctagon],
+      html: `<icon-alert-octagon></icon-alert-octagon>`,
+    });
 
-    const element = await page.find('icon-alert-octagon');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(AlertOctagon);
+
+    expect(page.root).toEqualHtml(`
+      <icon-alert-octagon class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-alert-octagon>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-alert-octagon stroke="blue"></icon-alert-octagon>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAlertOctagon],
+      html: `<icon-alert-octagon stroke="blue"></icon-alert-octagon>`,
+    });
 
-    const element = await page.find('icon-alert-octagon');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(AlertOctagon);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-alert-octagon > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-alert-octagon class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-alert-octagon>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-alert-octagon stroke-width="2"></icon-alert-octagon>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAlertOctagon],
+      html: `<icon-alert-octagon stroke-width="2"></icon-alert-octagon>`,
+    });
 
-    const element = await page.find('icon-alert-octagon');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(AlertOctagon);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-alert-octagon > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-alert-octagon class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-alert-octagon>
+    `);
   });
 });

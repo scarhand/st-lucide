@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconHeadphones } from '../headphones';
+import { createElement, Headphones }  from 'lucide';
 
 describe('icon-headphones', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-headphones></icon-headphones>');
+    const page = await newSpecPage({
+      components: [IconHeadphones],
+      html: `<icon-headphones></icon-headphones>`,
+    });
 
-    const element = await page.find('icon-headphones');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Headphones);
+
+    expect(page.root).toEqualHtml(`
+      <icon-headphones class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-headphones>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-headphones stroke="blue"></icon-headphones>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconHeadphones],
+      html: `<icon-headphones stroke="blue"></icon-headphones>`,
+    });
 
-    const element = await page.find('icon-headphones');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Headphones);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-headphones > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-headphones class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-headphones>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-headphones stroke-width="2"></icon-headphones>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconHeadphones],
+      html: `<icon-headphones stroke-width="2"></icon-headphones>`,
+    });
 
-    const element = await page.find('icon-headphones');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Headphones);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-headphones > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-headphones class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-headphones>
+    `);
   });
 });

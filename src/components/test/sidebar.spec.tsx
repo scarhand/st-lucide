@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconSidebar } from '../sidebar';
+import { createElement, Sidebar }  from 'lucide';
 
 describe('icon-sidebar', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-sidebar></icon-sidebar>');
+    const page = await newSpecPage({
+      components: [IconSidebar],
+      html: `<icon-sidebar></icon-sidebar>`,
+    });
 
-    const element = await page.find('icon-sidebar');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Sidebar);
+
+    expect(page.root).toEqualHtml(`
+      <icon-sidebar class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-sidebar>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-sidebar stroke="blue"></icon-sidebar>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSidebar],
+      html: `<icon-sidebar stroke="blue"></icon-sidebar>`,
+    });
 
-    const element = await page.find('icon-sidebar');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Sidebar);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-sidebar > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-sidebar class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-sidebar>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-sidebar stroke-width="2"></icon-sidebar>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSidebar],
+      html: `<icon-sidebar stroke-width="2"></icon-sidebar>`,
+    });
 
-    const element = await page.find('icon-sidebar');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Sidebar);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-sidebar > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-sidebar class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-sidebar>
+    `);
   });
 });

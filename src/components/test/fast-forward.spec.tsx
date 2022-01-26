@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconFastForward } from '../fast-forward';
+import { createElement, FastForward }  from 'lucide';
 
 describe('icon-fast-forward', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-fast-forward></icon-fast-forward>');
+    const page = await newSpecPage({
+      components: [IconFastForward],
+      html: `<icon-fast-forward></icon-fast-forward>`,
+    });
 
-    const element = await page.find('icon-fast-forward');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(FastForward);
+
+    expect(page.root).toEqualHtml(`
+      <icon-fast-forward class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-fast-forward>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-fast-forward stroke="blue"></icon-fast-forward>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconFastForward],
+      html: `<icon-fast-forward stroke="blue"></icon-fast-forward>`,
+    });
 
-    const element = await page.find('icon-fast-forward');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(FastForward);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-fast-forward > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-fast-forward class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-fast-forward>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-fast-forward stroke-width="2"></icon-fast-forward>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconFastForward],
+      html: `<icon-fast-forward stroke-width="2"></icon-fast-forward>`,
+    });
 
-    const element = await page.find('icon-fast-forward');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(FastForward);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-fast-forward > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-fast-forward class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-fast-forward>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCloudRain } from '../cloud-rain';
+import { createElement, CloudRain }  from 'lucide';
 
 describe('icon-cloud-rain', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud-rain></icon-cloud-rain>');
+    const page = await newSpecPage({
+      components: [IconCloudRain],
+      html: `<icon-cloud-rain></icon-cloud-rain>`,
+    });
 
-    const element = await page.find('icon-cloud-rain');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(CloudRain);
+
+    expect(page.root).toEqualHtml(`
+      <icon-cloud-rain class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-cloud-rain>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud-rain stroke="blue"></icon-cloud-rain>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCloudRain],
+      html: `<icon-cloud-rain stroke="blue"></icon-cloud-rain>`,
+    });
 
-    const element = await page.find('icon-cloud-rain');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(CloudRain);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-cloud-rain > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-cloud-rain class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-cloud-rain>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cloud-rain stroke-width="2"></icon-cloud-rain>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCloudRain],
+      html: `<icon-cloud-rain stroke-width="2"></icon-cloud-rain>`,
+    });
 
-    const element = await page.find('icon-cloud-rain');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(CloudRain);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-cloud-rain > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-cloud-rain class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-cloud-rain>
+    `);
   });
 });

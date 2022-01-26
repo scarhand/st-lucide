@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconArrowRight } from '../arrow-right';
+import { createElement, ArrowRight }  from 'lucide';
 
 describe('icon-arrow-right', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-arrow-right></icon-arrow-right>');
+    const page = await newSpecPage({
+      components: [IconArrowRight],
+      html: `<icon-arrow-right></icon-arrow-right>`,
+    });
 
-    const element = await page.find('icon-arrow-right');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(ArrowRight);
+
+    expect(page.root).toEqualHtml(`
+      <icon-arrow-right class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-arrow-right>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-arrow-right stroke="blue"></icon-arrow-right>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconArrowRight],
+      html: `<icon-arrow-right stroke="blue"></icon-arrow-right>`,
+    });
 
-    const element = await page.find('icon-arrow-right');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(ArrowRight);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-arrow-right > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-arrow-right class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-arrow-right>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-arrow-right stroke-width="2"></icon-arrow-right>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconArrowRight],
+      html: `<icon-arrow-right stroke-width="2"></icon-arrow-right>`,
+    });
 
-    const element = await page.find('icon-arrow-right');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(ArrowRight);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-arrow-right > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-arrow-right class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-arrow-right>
+    `);
   });
 });

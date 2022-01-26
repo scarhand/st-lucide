@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconPauseCircle } from '../pause-circle';
+import { createElement, PauseCircle }  from 'lucide';
 
 describe('icon-pause-circle', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-pause-circle></icon-pause-circle>');
+    const page = await newSpecPage({
+      components: [IconPauseCircle],
+      html: `<icon-pause-circle></icon-pause-circle>`,
+    });
 
-    const element = await page.find('icon-pause-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(PauseCircle);
+
+    expect(page.root).toEqualHtml(`
+      <icon-pause-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-pause-circle>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-pause-circle stroke="blue"></icon-pause-circle>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPauseCircle],
+      html: `<icon-pause-circle stroke="blue"></icon-pause-circle>`,
+    });
 
-    const element = await page.find('icon-pause-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(PauseCircle);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-pause-circle > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-pause-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-pause-circle>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-pause-circle stroke-width="2"></icon-pause-circle>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPauseCircle],
+      html: `<icon-pause-circle stroke-width="2"></icon-pause-circle>`,
+    });
 
-    const element = await page.find('icon-pause-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(PauseCircle);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-pause-circle > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-pause-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-pause-circle>
+    `);
   });
 });

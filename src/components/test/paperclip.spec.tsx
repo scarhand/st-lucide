@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconPaperclip } from '../paperclip';
+import { createElement, Paperclip }  from 'lucide';
 
 describe('icon-paperclip', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-paperclip></icon-paperclip>');
+    const page = await newSpecPage({
+      components: [IconPaperclip],
+      html: `<icon-paperclip></icon-paperclip>`,
+    });
 
-    const element = await page.find('icon-paperclip');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Paperclip);
+
+    expect(page.root).toEqualHtml(`
+      <icon-paperclip class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-paperclip>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-paperclip stroke="blue"></icon-paperclip>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPaperclip],
+      html: `<icon-paperclip stroke="blue"></icon-paperclip>`,
+    });
 
-    const element = await page.find('icon-paperclip');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Paperclip);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-paperclip > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-paperclip class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-paperclip>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-paperclip stroke-width="2"></icon-paperclip>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPaperclip],
+      html: `<icon-paperclip stroke-width="2"></icon-paperclip>`,
+    });
 
-    const element = await page.find('icon-paperclip');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Paperclip);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-paperclip > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-paperclip class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-paperclip>
+    `);
   });
 });

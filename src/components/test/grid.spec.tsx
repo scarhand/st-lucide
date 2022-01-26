@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconGrid } from '../grid';
+import { createElement, Grid }  from 'lucide';
 
 describe('icon-grid', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-grid></icon-grid>');
+    const page = await newSpecPage({
+      components: [IconGrid],
+      html: `<icon-grid></icon-grid>`,
+    });
 
-    const element = await page.find('icon-grid');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Grid);
+
+    expect(page.root).toEqualHtml(`
+      <icon-grid class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-grid>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-grid stroke="blue"></icon-grid>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGrid],
+      html: `<icon-grid stroke="blue"></icon-grid>`,
+    });
 
-    const element = await page.find('icon-grid');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Grid);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-grid > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-grid class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-grid>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-grid stroke-width="2"></icon-grid>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGrid],
+      html: `<icon-grid stroke-width="2"></icon-grid>`,
+    });
 
-    const element = await page.find('icon-grid');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Grid);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-grid > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-grid class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-grid>
+    `);
   });
 });

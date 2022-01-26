@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconGitlab } from '../gitlab';
+import { createElement, Gitlab }  from 'lucide';
 
 describe('icon-gitlab', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-gitlab></icon-gitlab>');
+    const page = await newSpecPage({
+      components: [IconGitlab],
+      html: `<icon-gitlab></icon-gitlab>`,
+    });
 
-    const element = await page.find('icon-gitlab');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Gitlab);
+
+    expect(page.root).toEqualHtml(`
+      <icon-gitlab class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-gitlab>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-gitlab stroke="blue"></icon-gitlab>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGitlab],
+      html: `<icon-gitlab stroke="blue"></icon-gitlab>`,
+    });
 
-    const element = await page.find('icon-gitlab');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Gitlab);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-gitlab > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-gitlab class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-gitlab>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-gitlab stroke-width="2"></icon-gitlab>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGitlab],
+      html: `<icon-gitlab stroke-width="2"></icon-gitlab>`,
+    });
 
-    const element = await page.find('icon-gitlab');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Gitlab);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-gitlab > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-gitlab class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-gitlab>
+    `);
   });
 });

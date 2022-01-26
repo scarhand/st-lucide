@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconSlack } from '../slack';
+import { createElement, Slack }  from 'lucide';
 
 describe('icon-slack', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-slack></icon-slack>');
+    const page = await newSpecPage({
+      components: [IconSlack],
+      html: `<icon-slack></icon-slack>`,
+    });
 
-    const element = await page.find('icon-slack');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Slack);
+
+    expect(page.root).toEqualHtml(`
+      <icon-slack class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-slack>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-slack stroke="blue"></icon-slack>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSlack],
+      html: `<icon-slack stroke="blue"></icon-slack>`,
+    });
 
-    const element = await page.find('icon-slack');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Slack);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-slack > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-slack class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-slack>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-slack stroke-width="2"></icon-slack>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSlack],
+      html: `<icon-slack stroke-width="2"></icon-slack>`,
+    });
 
-    const element = await page.find('icon-slack');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Slack);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-slack > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-slack class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-slack>
+    `);
   });
 });

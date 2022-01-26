@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCoffee } from '../coffee';
+import { createElement, Coffee }  from 'lucide';
 
 describe('icon-coffee', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-coffee></icon-coffee>');
+    const page = await newSpecPage({
+      components: [IconCoffee],
+      html: `<icon-coffee></icon-coffee>`,
+    });
 
-    const element = await page.find('icon-coffee');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Coffee);
+
+    expect(page.root).toEqualHtml(`
+      <icon-coffee class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-coffee>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-coffee stroke="blue"></icon-coffee>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCoffee],
+      html: `<icon-coffee stroke="blue"></icon-coffee>`,
+    });
 
-    const element = await page.find('icon-coffee');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Coffee);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-coffee > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-coffee class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-coffee>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-coffee stroke-width="2"></icon-coffee>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCoffee],
+      html: `<icon-coffee stroke-width="2"></icon-coffee>`,
+    });
 
-    const element = await page.find('icon-coffee');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Coffee);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-coffee > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-coffee class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-coffee>
+    `);
   });
 });

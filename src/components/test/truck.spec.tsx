@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconTruck } from '../truck';
+import { createElement, Truck }  from 'lucide';
 
 describe('icon-truck', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-truck></icon-truck>');
+    const page = await newSpecPage({
+      components: [IconTruck],
+      html: `<icon-truck></icon-truck>`,
+    });
 
-    const element = await page.find('icon-truck');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Truck);
+
+    expect(page.root).toEqualHtml(`
+      <icon-truck class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-truck>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-truck stroke="blue"></icon-truck>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTruck],
+      html: `<icon-truck stroke="blue"></icon-truck>`,
+    });
 
-    const element = await page.find('icon-truck');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Truck);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-truck > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-truck class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-truck>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-truck stroke-width="2"></icon-truck>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconTruck],
+      html: `<icon-truck stroke-width="2"></icon-truck>`,
+    });
 
-    const element = await page.find('icon-truck');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Truck);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-truck > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-truck class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-truck>
+    `);
   });
 });

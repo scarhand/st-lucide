@@ -7,7 +7,7 @@ describe('icon-triangle', () => {
 
     const element = await page.find('icon-triangle');
     expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    expect(element).toHaveClass('st-lucide-icon');
   });
 
   it('renders one-word props', async () => {

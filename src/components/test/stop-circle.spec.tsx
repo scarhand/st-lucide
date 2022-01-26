@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconStopCircle } from '../stop-circle';
+import { createElement, StopCircle }  from 'lucide';
 
 describe('icon-stop-circle', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-stop-circle></icon-stop-circle>');
+    const page = await newSpecPage({
+      components: [IconStopCircle],
+      html: `<icon-stop-circle></icon-stop-circle>`,
+    });
 
-    const element = await page.find('icon-stop-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(StopCircle);
+
+    expect(page.root).toEqualHtml(`
+      <icon-stop-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-stop-circle>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-stop-circle stroke="blue"></icon-stop-circle>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconStopCircle],
+      html: `<icon-stop-circle stroke="blue"></icon-stop-circle>`,
+    });
 
-    const element = await page.find('icon-stop-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(StopCircle);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-stop-circle > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-stop-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-stop-circle>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-stop-circle stroke-width="2"></icon-stop-circle>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconStopCircle],
+      html: `<icon-stop-circle stroke-width="2"></icon-stop-circle>`,
+    });
 
-    const element = await page.find('icon-stop-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(StopCircle);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-stop-circle > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-stop-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-stop-circle>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconGithub } from '../github';
+import { createElement, Github }  from 'lucide';
 
 describe('icon-github', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-github></icon-github>');
+    const page = await newSpecPage({
+      components: [IconGithub],
+      html: `<icon-github></icon-github>`,
+    });
 
-    const element = await page.find('icon-github');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Github);
+
+    expect(page.root).toEqualHtml(`
+      <icon-github class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-github>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-github stroke="blue"></icon-github>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGithub],
+      html: `<icon-github stroke="blue"></icon-github>`,
+    });
 
-    const element = await page.find('icon-github');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Github);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-github > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-github class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-github>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-github stroke-width="2"></icon-github>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconGithub],
+      html: `<icon-github stroke-width="2"></icon-github>`,
+    });
 
-    const element = await page.find('icon-github');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Github);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-github > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-github class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-github>
+    `);
   });
 });

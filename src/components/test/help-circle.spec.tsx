@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconHelpCircle } from '../help-circle';
+import { createElement, HelpCircle }  from 'lucide';
 
 describe('icon-help-circle', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-help-circle></icon-help-circle>');
+    const page = await newSpecPage({
+      components: [IconHelpCircle],
+      html: `<icon-help-circle></icon-help-circle>`,
+    });
 
-    const element = await page.find('icon-help-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(HelpCircle);
+
+    expect(page.root).toEqualHtml(`
+      <icon-help-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-help-circle>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-help-circle stroke="blue"></icon-help-circle>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconHelpCircle],
+      html: `<icon-help-circle stroke="blue"></icon-help-circle>`,
+    });
 
-    const element = await page.find('icon-help-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(HelpCircle);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-help-circle > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-help-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-help-circle>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-help-circle stroke-width="2"></icon-help-circle>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconHelpCircle],
+      html: `<icon-help-circle stroke-width="2"></icon-help-circle>`,
+    });
 
-    const element = await page.find('icon-help-circle');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(HelpCircle);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-help-circle > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-help-circle class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-help-circle>
+    `);
   });
 });

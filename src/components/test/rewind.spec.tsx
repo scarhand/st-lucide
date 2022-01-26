@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconRewind } from '../rewind';
+import { createElement, Rewind }  from 'lucide';
 
 describe('icon-rewind', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-rewind></icon-rewind>');
+    const page = await newSpecPage({
+      components: [IconRewind],
+      html: `<icon-rewind></icon-rewind>`,
+    });
 
-    const element = await page.find('icon-rewind');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Rewind);
+
+    expect(page.root).toEqualHtml(`
+      <icon-rewind class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-rewind>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-rewind stroke="blue"></icon-rewind>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRewind],
+      html: `<icon-rewind stroke="blue"></icon-rewind>`,
+    });
 
-    const element = await page.find('icon-rewind');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Rewind);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-rewind > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-rewind class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-rewind>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-rewind stroke-width="2"></icon-rewind>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRewind],
+      html: `<icon-rewind stroke-width="2"></icon-rewind>`,
+    });
 
-    const element = await page.find('icon-rewind');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Rewind);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-rewind > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-rewind class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-rewind>
+    `);
   });
 });

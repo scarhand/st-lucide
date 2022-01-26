@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconAlignJustify } from '../align-justify';
+import { createElement, AlignJustify }  from 'lucide';
 
 describe('icon-align-justify', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-align-justify></icon-align-justify>');
+    const page = await newSpecPage({
+      components: [IconAlignJustify],
+      html: `<icon-align-justify></icon-align-justify>`,
+    });
 
-    const element = await page.find('icon-align-justify');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(AlignJustify);
+
+    expect(page.root).toEqualHtml(`
+      <icon-align-justify class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-align-justify>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-align-justify stroke="blue"></icon-align-justify>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAlignJustify],
+      html: `<icon-align-justify stroke="blue"></icon-align-justify>`,
+    });
 
-    const element = await page.find('icon-align-justify');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(AlignJustify);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-align-justify > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-align-justify class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-align-justify>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-align-justify stroke-width="2"></icon-align-justify>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAlignJustify],
+      html: `<icon-align-justify stroke-width="2"></icon-align-justify>`,
+    });
 
-    const element = await page.find('icon-align-justify');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(AlignJustify);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-align-justify > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-align-justify class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-align-justify>
+    `);
   });
 });

@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconMusic } from '../music';
+import { createElement, Music }  from 'lucide';
 
 describe('icon-music', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-music></icon-music>');
+    const page = await newSpecPage({
+      components: [IconMusic],
+      html: `<icon-music></icon-music>`,
+    });
 
-    const element = await page.find('icon-music');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Music);
+
+    expect(page.root).toEqualHtml(`
+      <icon-music class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-music>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-music stroke="blue"></icon-music>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMusic],
+      html: `<icon-music stroke="blue"></icon-music>`,
+    });
 
-    const element = await page.find('icon-music');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Music);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-music > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-music class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-music>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-music stroke-width="2"></icon-music>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconMusic],
+      html: `<icon-music stroke-width="2"></icon-music>`,
+    });
 
-    const element = await page.find('icon-music');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Music);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-music > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-music class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-music>
+    `);
   });
 });

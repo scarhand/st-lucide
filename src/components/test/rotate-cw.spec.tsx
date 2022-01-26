@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconRotateCw } from '../rotate-cw';
+import { createElement, RotateCw }  from 'lucide';
 
 describe('icon-rotate-cw', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-rotate-cw></icon-rotate-cw>');
+    const page = await newSpecPage({
+      components: [IconRotateCw],
+      html: `<icon-rotate-cw></icon-rotate-cw>`,
+    });
 
-    const element = await page.find('icon-rotate-cw');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(RotateCw);
+
+    expect(page.root).toEqualHtml(`
+      <icon-rotate-cw class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-rotate-cw>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-rotate-cw stroke="blue"></icon-rotate-cw>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRotateCw],
+      html: `<icon-rotate-cw stroke="blue"></icon-rotate-cw>`,
+    });
 
-    const element = await page.find('icon-rotate-cw');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(RotateCw);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-rotate-cw > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-rotate-cw class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-rotate-cw>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-rotate-cw stroke-width="2"></icon-rotate-cw>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconRotateCw],
+      html: `<icon-rotate-cw stroke-width="2"></icon-rotate-cw>`,
+    });
 
-    const element = await page.find('icon-rotate-cw');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(RotateCw);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-rotate-cw > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-rotate-cw class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-rotate-cw>
+    `);
   });
 });

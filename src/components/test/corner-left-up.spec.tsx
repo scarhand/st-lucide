@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCornerLeftUp } from '../corner-left-up';
+import { createElement, CornerLeftUp }  from 'lucide';
 
 describe('icon-corner-left-up', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-corner-left-up></icon-corner-left-up>');
+    const page = await newSpecPage({
+      components: [IconCornerLeftUp],
+      html: `<icon-corner-left-up></icon-corner-left-up>`,
+    });
 
-    const element = await page.find('icon-corner-left-up');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(CornerLeftUp);
+
+    expect(page.root).toEqualHtml(`
+      <icon-corner-left-up class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-corner-left-up>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-corner-left-up stroke="blue"></icon-corner-left-up>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCornerLeftUp],
+      html: `<icon-corner-left-up stroke="blue"></icon-corner-left-up>`,
+    });
 
-    const element = await page.find('icon-corner-left-up');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(CornerLeftUp);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-corner-left-up > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-corner-left-up class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-corner-left-up>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-corner-left-up stroke-width="2"></icon-corner-left-up>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCornerLeftUp],
+      html: `<icon-corner-left-up stroke-width="2"></icon-corner-left-up>`,
+    });
 
-    const element = await page.find('icon-corner-left-up');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(CornerLeftUp);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-corner-left-up > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-corner-left-up class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-corner-left-up>
+    `);
   });
 });

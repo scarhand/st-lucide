@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconSmartphone } from '../smartphone';
+import { createElement, Smartphone }  from 'lucide';
 
 describe('icon-smartphone', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-smartphone></icon-smartphone>');
+    const page = await newSpecPage({
+      components: [IconSmartphone],
+      html: `<icon-smartphone></icon-smartphone>`,
+    });
 
-    const element = await page.find('icon-smartphone');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Smartphone);
+
+    expect(page.root).toEqualHtml(`
+      <icon-smartphone class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-smartphone>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-smartphone stroke="blue"></icon-smartphone>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSmartphone],
+      html: `<icon-smartphone stroke="blue"></icon-smartphone>`,
+    });
 
-    const element = await page.find('icon-smartphone');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Smartphone);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-smartphone > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-smartphone class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-smartphone>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-smartphone stroke-width="2"></icon-smartphone>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconSmartphone],
+      html: `<icon-smartphone stroke-width="2"></icon-smartphone>`,
+    });
 
-    const element = await page.find('icon-smartphone');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Smartphone);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-smartphone > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-smartphone class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-smartphone>
+    `);
   });
 });

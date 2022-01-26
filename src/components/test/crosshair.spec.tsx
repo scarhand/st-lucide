@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCrosshair } from '../crosshair';
+import { createElement, Crosshair }  from 'lucide';
 
 describe('icon-crosshair', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-crosshair></icon-crosshair>');
+    const page = await newSpecPage({
+      components: [IconCrosshair],
+      html: `<icon-crosshair></icon-crosshair>`,
+    });
 
-    const element = await page.find('icon-crosshair');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Crosshair);
+
+    expect(page.root).toEqualHtml(`
+      <icon-crosshair class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-crosshair>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-crosshair stroke="blue"></icon-crosshair>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCrosshair],
+      html: `<icon-crosshair stroke="blue"></icon-crosshair>`,
+    });
 
-    const element = await page.find('icon-crosshair');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Crosshair);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-crosshair > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-crosshair class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-crosshair>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-crosshair stroke-width="2"></icon-crosshair>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCrosshair],
+      html: `<icon-crosshair stroke-width="2"></icon-crosshair>`,
+    });
 
-    const element = await page.find('icon-crosshair');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Crosshair);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-crosshair > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-crosshair class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-crosshair>
+    `);
   });
 });

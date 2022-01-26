@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconPercent } from '../percent';
+import { createElement, Percent }  from 'lucide';
 
 describe('icon-percent', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-percent></icon-percent>');
+    const page = await newSpecPage({
+      components: [IconPercent],
+      html: `<icon-percent></icon-percent>`,
+    });
 
-    const element = await page.find('icon-percent');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Percent);
+
+    expect(page.root).toEqualHtml(`
+      <icon-percent class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-percent>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-percent stroke="blue"></icon-percent>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPercent],
+      html: `<icon-percent stroke="blue"></icon-percent>`,
+    });
 
-    const element = await page.find('icon-percent');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Percent);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-percent > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-percent class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-percent>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-percent stroke-width="2"></icon-percent>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPercent],
+      html: `<icon-percent stroke-width="2"></icon-percent>`,
+    });
 
-    const element = await page.find('icon-percent');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Percent);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-percent > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-percent class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-percent>
+    `);
   });
 });

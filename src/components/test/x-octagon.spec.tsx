@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconXOctagon } from '../x-octagon';
+import { createElement, XOctagon }  from 'lucide';
 
 describe('icon-x-octagon', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-x-octagon></icon-x-octagon>');
+    const page = await newSpecPage({
+      components: [IconXOctagon],
+      html: `<icon-x-octagon></icon-x-octagon>`,
+    });
 
-    const element = await page.find('icon-x-octagon');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(XOctagon);
+
+    expect(page.root).toEqualHtml(`
+      <icon-x-octagon class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-x-octagon>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-x-octagon stroke="blue"></icon-x-octagon>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconXOctagon],
+      html: `<icon-x-octagon stroke="blue"></icon-x-octagon>`,
+    });
 
-    const element = await page.find('icon-x-octagon');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(XOctagon);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-x-octagon > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-x-octagon class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-x-octagon>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-x-octagon stroke-width="2"></icon-x-octagon>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconXOctagon],
+      html: `<icon-x-octagon stroke-width="2"></icon-x-octagon>`,
+    });
 
-    const element = await page.find('icon-x-octagon');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(XOctagon);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-x-octagon > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-x-octagon class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-x-octagon>
+    `);
   });
 });

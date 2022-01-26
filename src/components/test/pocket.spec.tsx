@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconPocket } from '../pocket';
+import { createElement, Pocket }  from 'lucide';
 
 describe('icon-pocket', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-pocket></icon-pocket>');
+    const page = await newSpecPage({
+      components: [IconPocket],
+      html: `<icon-pocket></icon-pocket>`,
+    });
 
-    const element = await page.find('icon-pocket');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Pocket);
+
+    expect(page.root).toEqualHtml(`
+      <icon-pocket class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-pocket>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-pocket stroke="blue"></icon-pocket>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPocket],
+      html: `<icon-pocket stroke="blue"></icon-pocket>`,
+    });
 
-    const element = await page.find('icon-pocket');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Pocket);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-pocket > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-pocket class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-pocket>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-pocket stroke-width="2"></icon-pocket>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconPocket],
+      html: `<icon-pocket stroke-width="2"></icon-pocket>`,
+    });
 
-    const element = await page.find('icon-pocket');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Pocket);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-pocket > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-pocket class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-pocket>
+    `);
   });
 });

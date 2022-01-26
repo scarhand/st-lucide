@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconAtSign } from '../at-sign';
+import { createElement, AtSign }  from 'lucide';
 
 describe('icon-at-sign', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-at-sign></icon-at-sign>');
+    const page = await newSpecPage({
+      components: [IconAtSign],
+      html: `<icon-at-sign></icon-at-sign>`,
+    });
 
-    const element = await page.find('icon-at-sign');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(AtSign);
+
+    expect(page.root).toEqualHtml(`
+      <icon-at-sign class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-at-sign>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-at-sign stroke="blue"></icon-at-sign>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAtSign],
+      html: `<icon-at-sign stroke="blue"></icon-at-sign>`,
+    });
 
-    const element = await page.find('icon-at-sign');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(AtSign);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-at-sign > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-at-sign class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-at-sign>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-at-sign stroke-width="2"></icon-at-sign>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconAtSign],
+      html: `<icon-at-sign stroke-width="2"></icon-at-sign>`,
+    });
 
-    const element = await page.find('icon-at-sign');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(AtSign);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-at-sign > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-at-sign class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-at-sign>
+    `);
   });
 });

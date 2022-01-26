@@ -1,36 +1,52 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newSpecPage } from '@stencil/core/testing';
+import { IconCpu } from '../cpu';
+import { createElement, Cpu }  from 'lucide';
 
 describe('icon-cpu', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cpu></icon-cpu>');
+    const page = await newSpecPage({
+      components: [IconCpu],
+      html: `<icon-cpu></icon-cpu>`,
+    });
 
-    const element = await page.find('icon-cpu');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toHaveClass('st-feather-icon');
+    const svg = createElement(Cpu);
+
+    expect(page.root).toEqualHtml(`
+      <icon-cpu class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}">
+        ${svg.outerHTML}
+      </icon-cpu>
+    `);
   });
 
-  it('renders one-word props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cpu stroke="blue"></icon-cpu>');
+  it('forwards one-word props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCpu],
+      html: `<icon-cpu stroke="blue"></icon-cpu>`,
+    });
 
-    const element = await page.find('icon-cpu');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke', 'blue');
+    const svg = createElement(Cpu);
+    svg.setAttribute('stroke', 'blue');
 
-    const svg = await page.find('icon-cpu > svg');
-    expect(svg).toEqualAttribute('stroke', 'blue');
+    expect(page.root).toEqualHtml(`
+      <icon-cpu class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke="blue">
+        ${svg.outerHTML}
+      </icon-cpu>
+    `);
   });
 
-  it('renders dashed props', async () => {
-    const page = await newE2EPage();
-    await page.setContent('<icon-cpu stroke-width="2"></icon-cpu>');
+  it('forwards dashed props to svg', async () => {
+    const page = await newSpecPage({
+      components: [IconCpu],
+      html: `<icon-cpu stroke-width="2"></icon-cpu>`,
+    });
 
-    const element = await page.find('icon-cpu');
-    expect(element).toHaveClass('hydrated');
-    expect(element).toEqualAttribute('stroke-width', 2);
+    const svg = createElement(Cpu);
+    svg.setAttribute('stroke-width', 2);
 
-    const svg = await page.find('icon-cpu > svg');
-    expect(svg).toEqualAttribute('stroke-width', 2);
+    expect(page.root).toEqualHtml(`
+      <icon-cpu class="st-lucide-icon" innerhtml="${svg.outerHTML.replaceAll('"', '&quot;')}" stroke-width="2">
+        ${svg.outerHTML}
+      </icon-cpu>
+    `);
   });
 });
