@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { MousePointer2, createElement } from 'lucide';
+import { MousePointer2 as LucideMousePointer2, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconMousePointer2 {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(MousePointer2);
+    const inner = createElement(LucideMousePointer2);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }

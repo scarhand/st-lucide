@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { Dice6, createElement } from 'lucide';
+import { Dice6 as LucideDice6, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconDice6 {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(Dice6);
+    const inner = createElement(LucideDice6);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }

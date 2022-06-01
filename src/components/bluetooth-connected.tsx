@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { BluetoothConnected, createElement } from 'lucide';
+import { BluetoothConnected as LucideBluetoothConnected, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconBluetoothConnected {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(BluetoothConnected);
+    const inner = createElement(LucideBluetoothConnected);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }

@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { PhoneForwarded, createElement } from 'lucide';
+import { PhoneForwarded as LucidePhoneForwarded, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconPhoneForwarded {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(PhoneForwarded);
+    const inner = createElement(LucidePhoneForwarded);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }

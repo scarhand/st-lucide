@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { Dribbble, createElement } from 'lucide';
+import { Dribbble as LucideDribbble, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconDribbble {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(Dribbble);
+    const inner = createElement(LucideDribbble);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }

@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { Share2, createElement } from 'lucide';
+import { Share2 as LucideShare2, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconShare2 {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(Share2);
+    const inner = createElement(LucideShare2);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }

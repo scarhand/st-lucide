@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { SidebarOpen, createElement } from 'lucide';
+import { SidebarOpen as LucideSidebarOpen, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconSidebarOpen {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(SidebarOpen);
+    const inner = createElement(LucideSidebarOpen);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }

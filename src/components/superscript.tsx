@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { Superscript, createElement } from 'lucide';
+import { Superscript as LucideSuperscript, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconSuperscript {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(Superscript);
+    const inner = createElement(LucideSuperscript);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }

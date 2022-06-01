@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { RadioReceiver, createElement } from 'lucide';
+import { RadioReceiver as LucideRadioReceiver, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconRadioReceiver {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(RadioReceiver);
+    const inner = createElement(LucideRadioReceiver);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }

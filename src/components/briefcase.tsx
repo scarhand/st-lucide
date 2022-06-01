@@ -1,5 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { Briefcase, createElement } from 'lucide';
+import { Briefcase as LucideBriefcase, createElement } from 'lucide';
 import { attributesToObject } from '../utils/utils';
 
 @Component({
@@ -90,7 +90,7 @@ export class IconBriefcase {
   @Prop({ attribute: 'y' }) y: any;
 
   render() {
-    const inner = createElement(Briefcase);
+    const inner = createElement(LucideBriefcase);
     Object.entries(Object.assign({},attributesToObject(this.el), this.getProps())).forEach(([name,value]) => inner.setAttribute(name, value as string) );
     return <Host innerHTML={inner.outerHTML} class="st-lucide-icon"></Host>;
   }
