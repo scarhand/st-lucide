@@ -9,6 +9,10 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements',
+<<<<<<< HEAD
+=======
+      generateTypeDeclarations: true,
+>>>>>>> cc3bc5e (Upgrade lucide package and include new icons. Change output target type to dist-custom-elements in favor of deprecated dist-custom-elements-bundle. Bump version)
     }
   ],
 };
