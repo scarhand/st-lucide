@@ -119,3 +119,13 @@ icons.each do |icon|
     f.flush
   end
 end
+
+current_icons = Dir.glob("*.e2e.ts", base: File.join(File.dirname(__FILE__), "src", "components")).map {|f| f.gsub('.e2e.ts', '')}
+to_remove = current_icons - icons
+to_remove.each do |icon|
+  e2e_file = File.join(File.dirname(__FILE__), "src", "components", "#{icon}.e2e.ts")
+  spec_file = File.join(File.dirname(__FILE__), "src", "components", "#{icon}.spec.tsx")
+  puts "Removing #{e2e_file} and #{spec_file}..."
+  File.delete(e2e_file)
+  File.delete(spec_file)
+end

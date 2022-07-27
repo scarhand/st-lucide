@@ -126,3 +126,12 @@ icons.each do |icon|
     f.flush
   end
 end
+
+current_icons = Dir.glob("*.tsx", base: File.join(File.dirname(__FILE__), "src", "components")).map {|f| f.gsub('.tsx', '')}
+to_remove = current_icons - icons
+to_remove.each do |icon|
+  file = File.join(File.dirname(__FILE__), "src", "components", "#{icon}.tsx")
+  puts "Removing #{file}..."
+  File.delete(file)
+end
+
