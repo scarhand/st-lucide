@@ -1,6 +1,6 @@
 {
   "name": "st-lucide",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Lucide icons as StencilJS components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -40,7 +40,7 @@
   "homepage": "https://github.com/scarhand/st-lucide#readme",
   "dependencies": {
     "@stencil/core": "^2.0.1",
-    "lucide": "latest"
+    "lucide": "^0.91.0"
   },
   "license": "MIT",
   "devDependencies": {
